@@ -79,7 +79,7 @@ export function AboutPage() {
             whileInView="visible"
             viewport={{ once: true }}
             transition={{ staggerChildren: 0.25 }}
-            className="mt-24 grid gap-10 lg:grid-cols-3"
+            className="mt-24 grid gap-10 lg:grid-cols-2"
           >
             {[
               { title: "Our Mission" },
@@ -121,21 +121,7 @@ export function AboutPage() {
             viewport={{ once: true }}
             className="mt-20"
           >
-            <div className="relative overflow-hidden rounded-3xl border border-white/20 dark:border-gray-800/60 bg-white/60 dark:bg-gray-900/60 backdrop-blur-2xl p-14 text-center shadow-xl">
-              
-              {/* cinematic light sweep */}
-              <motion.div
-                animate={{ x: ["-120%", "120%"] }}
-                transition={{
-                  duration: 8,
-                  repeat: Infinity,
-                  ease: "linear",
-                }}
-                className="absolute top-0 left-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-12"
-              />
-
-               
-            </div>
+             
           </motion.div>
 
         </Container>
