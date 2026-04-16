@@ -25,7 +25,7 @@ export function AboutPage() {
   }, []);
 
   return (
-    <section className="relative scroll-mt-24 overflow-hidden">
+    <section className="relative scroll-mt-24 overflow-hidden" id="about">
       
       {/* 🌊 Base gradient */}
       <div className="absolute inset-0 -z-20 bg-gradient-to-b from-sky-50 via-white to-blue-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950" />
@@ -83,8 +83,7 @@ export function AboutPage() {
           >
             {[
               { title: "Our Mission" },
-              { title: "Our History" },
-              { title: "Our Team" },
+              { title: "Our History" }, 
             ].map((item, i) => (
               <motion.div
                 key={i}
@@ -135,9 +134,7 @@ export function AboutPage() {
                 className="absolute top-0 left-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-12"
               />
 
-              <p className="text-xl text-gray-600 dark:text-gray-300 italic relative z-10">
-                Team member profiles coming soon.
-              </p>
+               
             </div>
           </motion.div>
 
