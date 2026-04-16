@@ -4,7 +4,7 @@ import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { VolunteerForm } from "@/components/forms/volunteer-form";
 
 const programs = [
@@ -32,6 +32,19 @@ const programs = [
 
 export function ProgramsPage() {
   const [open, setOpen] = useState(false);
+
+  // 🔥 prevent background scroll when modal is open
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [open]);
 
   return (
     <section id="programs" className="scroll-mt-24 relative overflow-hidden">
@@ -104,7 +117,7 @@ export function ProgramsPage() {
       <AnimatePresence>
         {open && (
           <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -114,13 +127,13 @@ export function ProgramsPage() {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="relative w-full max-w-2xl"
+              transition={{ duration: 0.25 }}
+              className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto"
             >
               {/* CLOSE BUTTON */}
               <button
                 onClick={() => setOpen(false)}
-                className="absolute -top-3 -right-3 bg-white rounded-full w-10 h-10 shadow flex items-center justify-center text-black font-bold"
+                className="absolute -top-3 -right-3 bg-white rounded-full w-10 h-10 shadow flex items-center justify-center text-black font-bold hover:scale-110 transition"
               >
                 ✕
               </button>
