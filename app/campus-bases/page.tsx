@@ -21,7 +21,7 @@ export function CampusBasesPage() {
   }, [open]);
 
   return (
-    <section id="campus-bases" className="scroll-mt-24 relative overflow-hidden">
+    <section id="campus-bases" className="scroll-mt-24 relative overflow-hidden pb-24">
 
       {/* 🌈 BACKGROUND */}
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-blue-50 via-white to-blue-100 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950" />
