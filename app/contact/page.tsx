@@ -125,14 +125,7 @@ export function ContactPage() {
                   animate={{ opacity: 1, scale: 1 }}
                   className="relative rounded-3xl bg-white/80 dark:bg-white/5 backdrop-blur-xl border border-white/40 dark:border-white/10 p-10 text-center shadow-xl"
                 >
-                  {/* FIXED CLOSE BUTTON */}
-                  <button
-                    type="button"
-                    onClick={() => setSubmitted(false)}
-                    className="fixed top-6 right-6 z-[9999] p-3 rounded-full bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border border-gray-200 dark:border-gray-700 shadow-lg hover:scale-105 transition"
-                  >
-                    <X size={18} />
-                  </button>
+                  
 
                   <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-6">
                     <CheckCircle2 size={28} className="text-blue-600" />

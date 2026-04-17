@@ -13,7 +13,7 @@ import {
 } from "framer-motion";
 import { useEffect, useState } from "react";
 import { VolunteerForm } from "@/components/forms/volunteer-form";
-import DonatePage from "@/app/donate/page"; // 👈 IMPORT DONATE PAGE
+import DonatePage from "@/app/donate/page";
 
 // 🚀 Lazy load 3D
 const HeroInhaler3D = dynamic(
@@ -32,13 +32,28 @@ export function HeroSection() {
   const { scrollY } = useScroll();
 
   const [volunteerOpen, setVolunteerOpen] = useState(false);
-  const [donateOpen, setDonateOpen] = useState(false); // 👈 NEW
+  const [donateOpen, setDonateOpen] = useState(false);
 
-  // 🎬 Parallax
+  const closeAll = () => {
+    setVolunteerOpen(false);
+    setDonateOpen(false);
+  };
+
+  const openVolunteer = () => {
+    setDonateOpen(false);
+    setVolunteerOpen(true);
+  };
+
+  const openDonate = () => {
+    setVolunteerOpen(false);
+    setDonateOpen(true);
+  };
+
+  // Parallax
   const ySlow = useTransform(scrollY, [0, 500], [0, 80]);
   const yFast = useTransform(scrollY, [0, 500], [0, -60]);
 
-  // 💡 Mouse glow
+  // Mouse glow
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
@@ -51,7 +66,7 @@ export function HeroSection() {
     return () => window.removeEventListener("mousemove", move);
   }, []);
 
-  // 🔥 lock scroll + ESC close
+  // Lock scroll + ESC close
   useEffect(() => {
     if (volunteerOpen || donateOpen) {
       document.body.style.overflow = "hidden";
@@ -60,14 +75,10 @@ export function HeroSection() {
     }
 
     const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setVolunteerOpen(false);
-        setDonateOpen(false);
-      }
+      if (e.key === "Escape") closeAll();
     };
 
     window.addEventListener("keydown", handleEsc);
-
     return () => {
       document.body.style.overflow = "auto";
       window.removeEventListener("keydown", handleEsc);
@@ -76,10 +87,10 @@ export function HeroSection() {
 
   return (
     <section className="relative overflow-hidden">
-      {/* 🌈 BACKGROUND */}
+      {/* BACKGROUND */}
       <div className="absolute inset-0 -z-20 bg-gradient-to-b from-blue-50 via-white to-blue-100 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950" />
 
-      {/* 🎬 PARALLAX ORBS */}
+      {/* ORBS */}
       <motion.div
         style={{ y: ySlow }}
         className="absolute -top-40 -left-40 w-[500px] h-[500px] bg-blue-300/30 blur-[120px] rounded-full -z-10"
@@ -89,7 +100,7 @@ export function HeroSection() {
         className="absolute top-40 -right-40 w-[400px] h-[400px] bg-sky-300/30 blur-[120px] rounded-full -z-10"
       />
 
-      {/* 💡 MOUSE LIGHT */}
+      {/* MOUSE LIGHT */}
       <motion.div
         style={{
           x: mouseX,
@@ -105,8 +116,7 @@ export function HeroSection() {
 
           {/* LEFT */}
           <div className="flex-1 text-center lg:text-left">
-            
-            {/* HEADLINE */}
+
             <motion.h1
               initial={{ opacity: 0, y: 60 }}
               animate={{ opacity: 1, y: 0 }}
@@ -125,7 +135,6 @@ export function HeroSection() {
               </motion.span>
             </motion.h1>
 
-            {/* SUBTEXT */}
             <motion.p
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
@@ -135,31 +144,27 @@ export function HeroSection() {
               Supporting asthma awareness, education, and care for every family.
             </motion.p>
 
-            {/* CTA */}
             <div className="mt-10 flex flex-col items-center lg:items-start gap-6">
-              
-              {/* BUTTONS */}
+
               <div className="flex flex-col sm:flex-row gap-4 w-full">
-                
-                {/* 🔥 DONATE → MODAL */}
+
                 <Button
-                  onClick={() => setDonateOpen(true)}
+                  onClick={openDonate}
                   className="w-full sm:w-auto px-8 py-6 text-lg rounded-full bg-blue-500 text-white hover:scale-105 transition"
                 >
                   Donate Now
                 </Button>
 
-                {/* 🔥 VOLUNTEER */}
                 <Button
-                  onClick={() => setVolunteerOpen(true)}
+                  onClick={openVolunteer}
                   variant="outline"
                   className="w-full sm:w-auto px-8 py-6 text-lg rounded-full hover:scale-105 transition"
                 >
                   Join a Chapter
                 </Button>
+
               </div>
 
-              {/* STATS */}
               <div className="flex gap-6 text-sm text-gray-600 dark:text-gray-300">
                 <div>
                   <strong className="text-gray-900 dark:text-white">500+</strong>
@@ -174,6 +179,7 @@ export function HeroSection() {
                   <p>Chapters</p>
                 </div>
               </div>
+
             </div>
           </div>
 
@@ -181,17 +187,15 @@ export function HeroSection() {
           <div className="flex-1 w-full h-[300px] md:h-[500px]">
             <HeroInhaler3D />
           </div>
+
         </div>
       </Container>
 
-      {/* 🔥 MODALS */}
+      {/* MODAL */}
       <AnimatePresence>
         {(volunteerOpen || donateOpen) && (
           <motion.div
-            onClick={() => {
-              setVolunteerOpen(false);
-              setDonateOpen(false);
-            }}
+            onClick={closeAll}
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -202,11 +206,15 @@ export function HeroSection() {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ duration: 0.3 }}
               className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto"
             >
-              {volunteerOpen && <VolunteerForm />}
-              {donateOpen && <DonatePage />} {/* 👈 SAME FORM */}
+              {volunteerOpen && (
+                <VolunteerForm onClose={closeAll} />
+              )}
+
+              {donateOpen && (
+                <DonatePage onClose={closeAll} />
+              )}
             </motion.div>
           </motion.div>
         )}
