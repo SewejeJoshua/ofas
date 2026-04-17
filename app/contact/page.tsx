@@ -136,7 +136,7 @@ export function ContactPage() {
                   </h3>
 
                   <p className="text-gray-600 dark:text-gray-300 mt-2">
-                    We'll get back to you within 24–48 hours.
+                    We will get back to you within 24–48 hours.
                   </p>
                 </motion.div>
               ) : (
@@ -145,14 +145,7 @@ export function ContactPage() {
                   onSubmit={handleSubmit}
                   className="relative rounded-3xl bg-white/80 dark:bg-white/5 backdrop-blur-xl border border-white/40 dark:border-white/10 p-6 sm:p-10 space-y-5 shadow-xl pb-14"
                 >
-                  {/* FIXED CLOSE BUTTON */}
-                  <button
-                    type="button"
-                    onClick={() => setSubmitted(false)}
-                    className="fixed top-6 right-6 z-[9999] p-3 rounded-full bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border border-gray-200 dark:border-gray-700 shadow-lg hover:scale-105 transition"
-                  >
-                    <X size={18} />
-                  </button>
+                 
 
                   <div className="grid sm:grid-cols-2 gap-4">
                     <input
