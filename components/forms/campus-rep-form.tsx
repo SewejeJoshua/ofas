@@ -7,84 +7,124 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
 const formSchema = z.object({
-    fullName: z.string().min(2, { message: "Name must be at least 2 characters." }),
-    email: z.string().email({ message: "Please enter a valid email address." }),
-    university: z.string().min(2, { message: "University name is required." }),
-    year: z.string().min(1, { message: "Graduation year is required." }),
-    motivation: z.string().min(10, { message: "Please tell us why you want to start a chapter." }),
+  fullName: z.string().min(2, "Name must be at least 2 characters."),
+  email: z.string().email("Enter a valid email."),
+  university: z.string().min(2, "University is required."),
+  year: z.string().min(1, "Graduation year required."),
+  motivation: z.string().min(10, "Tell us more (min 10 chars)."),
 });
 
 export function CampusRepForm() {
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [isSuccess, setIsSuccess] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-            fullName: "",
-            email: "",
-            university: "",
-            year: "",
-            motivation: "",
-        },
-    });
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      fullName: "",
+      email: "",
+      university: "",
+      year: "",
+      motivation: "",
+    },
+  });
 
-    async function onSubmit(values: z.infer<typeof formSchema>) {
-        setIsSubmitting(true);
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        console.log(values);
-        setIsSuccess(true);
-        setIsSubmitting(false);
-        form.reset();
-    }
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsSubmitting(true);
+    await new Promise((r) => setTimeout(r, 1000));
+    console.log(values);
+    setIsSubmitting(false);
+    setIsSuccess(true);
+    form.reset();
+  }
 
-    if (isSuccess) {
-        return (
-            <div className="bg-green-50 border border-green-200 text-green-700 p-6 rounded-lg text-center">
-                <h3 className="text-xl font-bold mb-2">Application Received!</h3>
-                <p>We'll review your application and get back to you soon.</p>
-                <Button onClick={() => setIsSuccess(false)} variant="outline" className="mt-4 bg-white">Submit another application</Button>
-            </div>
-        )
-    }
-
+  if (isSuccess) {
     return (
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 bg-slate-700 p-8 rounded-3xl shadow-xl">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                    <label className="text-sm font-semibold text-white">Full Name</label>
-                    <input {...form.register("fullName")} className="flex h-12 w-full rounded-xl bg-slate-800 px-4 py-2 text-sm ring-offset-background placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 transition-all text-white border-0" placeholder="Willam Chiemeka" />
-                    {form.formState.errors.fullName && <p className="text-sm text-red-500">{form.formState.errors.fullName.message}</p>}
-                </div>
-                <div className="space-y-2">
-                    <label className="text-sm font-semibold text-white">Email Address</label>
-                    <input type="email" {...form.register("email")} className="flex h-12 w-full rounded-xl bg-slate-800 px-4 py-2 text-sm ring-offset-background placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 transition-all text-white border-0" placeholder="chiemeka@edu.com" />
-                    {form.formState.errors.email && <p className="text-sm text-red-500">{form.formState.errors.email.message}</p>}
-                </div>
-            </div>
+      <div className="bg-white rounded-2xl p-8 text-center shadow-xl">
+        <div className="text-4xl mb-3">🎉</div>
+        <h3 className="text-xl font-semibold">
+          Application Received!
+        </h3>
+        <p className="text-gray-600 mt-2">
+          We'll get back to you shortly.
+        </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                    <label className="text-sm font-semibold text-white">University / College</label>
-                    <input {...form.register("university")} className="flex h-12 w-full rounded-xl bg-slate-800 px-4 py-2 text-sm ring-offset-background placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 transition-all text-white border-0" placeholder="Rivers State University" />
-                    {form.formState.errors.university && <p className="text-sm text-red-500">{form.formState.errors.university.message}</p>}
-                </div>
-                <div className="space-y-2">
-                    <label className="text-sm font-semibold text-white">Graduation Year</label>
-                    <input {...form.register("year")} className="flex h-12 w-full rounded-xl bg-slate-800 px-4 py-2 text-sm ring-offset-background placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 transition-all text-white border-0" placeholder="2027" />
-                    {form.formState.errors.year && <p className="text-sm text-red-500">{form.formState.errors.year.message}</p>}
-                </div>
-            </div>
-
-            <div className="space-y-2">
-                <label className="text-sm font-semibold text-white">Why do you want to start a chapter?</label>
-                <textarea {...form.register("motivation")} className="flex min-h-[140px] w-full rounded-xl bg-slate-800 px-4 py-3 text-sm ring-offset-background placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 transition-all text-white border-0 resize-y" placeholder="Tell us your motivation..." />
-                {form.formState.errors.motivation && <p className="text-sm text-red-500">{form.formState.errors.motivation.message}</p>}
-            </div>
-
-            <Button type="submit" className="w-full h-12 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all font-bold text-lg bg-blue-800 hover:bg-blue-700 text-white border-0" disabled={isSubmitting}>
-                {isSubmitting ? "Submitting..." : "Apply to Start a Chapter"}
-            </Button>
-        </form>
+        <Button
+          onClick={() => setIsSuccess(false)}
+          className="mt-6"
+          variant="outline"
+        >
+          Submit another
+        </Button>
+      </div>
     );
+  }
+
+  const error = (msg?: string) =>
+    msg ? <p className="text-xs text-red-500 mt-1">{msg}</p> : null;
+
+  return (
+    <form
+      onSubmit={form.handleSubmit(onSubmit)}
+      className="bg-slate-900 text-white p-8 rounded-3xl space-y-6 shadow-2xl"
+    >
+      <h2 className="text-2xl font-semibold">
+        Start a Campus Chapter
+      </h2>
+
+      <div className="grid md:grid-cols-2 gap-4">
+        <div>
+          <input
+            placeholder="Full Name"
+            {...form.register("fullName")}
+            className="w-full h-12 px-4 rounded-xl bg-slate-800"
+          />
+          {error(form.formState.errors.fullName?.message)}
+        </div>
+
+        <div>
+          <input
+            placeholder="Email"
+            {...form.register("email")}
+            className="w-full h-12 px-4 rounded-xl bg-slate-800"
+          />
+          {error(form.formState.errors.email?.message)}
+        </div>
+
+        <div>
+          <input
+            placeholder="University"
+            {...form.register("university")}
+            className="w-full h-12 px-4 rounded-xl bg-slate-800"
+          />
+          {error(form.formState.errors.university?.message)}
+        </div>
+
+        <div>
+          <input
+            placeholder="Graduation Year"
+            {...form.register("year")}
+            className="w-full h-12 px-4 rounded-xl bg-slate-800"
+          />
+          {error(form.formState.errors.year?.message)}
+        </div>
+      </div>
+
+      <textarea
+        placeholder="Why do you want to start a chapter?"
+        rows={5}
+        {...form.register("motivation")}
+        className="w-full p-4 rounded-xl bg-slate-800"
+      />
+      {error(form.formState.errors.motivation?.message)}
+
+      <Button
+        type="submit"
+        disabled={isSubmitting}
+        className="w-full h-12 bg-blue-600 hover:bg-blue-500"
+      >
+        {isSubmitting ? "Submitting..." : "Apply Now"}
+      </Button>
+    </form>
+  );
 }
