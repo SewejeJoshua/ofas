@@ -2,7 +2,7 @@
 
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
-import { CreditCard, Heart, X } from "lucide-react"; // 👈 added X
+import { CreditCard, Heart, X } from "lucide-react";
 import { useState } from "react";
 
 export default function DonatePage({ onClose }: { onClose?: () => void }) {
@@ -26,18 +26,27 @@ export default function DonatePage({ onClose }: { onClose?: () => void }) {
     setIsSuccess(true);
   }
 
+  const CloseButton = () =>
+    onClose ? (
+      <button
+        onClick={onClose}
+        className="
+          fixed top-6 right-6 z-[9999]
+          p-3 rounded-full
+          bg-white/90 dark:bg-gray-900/90
+          backdrop-blur-md
+          shadow-lg border border-gray-200 dark:border-gray-700
+          hover:scale-105 transition
+        "
+      >
+        <X className="w-5 h-5 text-gray-700 dark:text-gray-200" />
+      </button>
+    ) : null;
+
   if (isSuccess) {
     return (
       <div className="bg-gray-50 py-16 sm:py-24 relative">
-        {/* ❌ CLOSE BUTTON (modal only) */}
-        {onClose && (
-          <button
-            onClick={onClose}
-            className="absolute top-6 right-6 p-2 rounded-full hover:bg-gray-200 transition"
-          >
-            <X className="w-5 h-5" />
-          </button>
-        )}
+        <CloseButton />
 
         <Container>
           <div className="max-w-xl mx-auto bg-white rounded-3xl p-10 text-center shadow-xl">
@@ -68,15 +77,7 @@ export default function DonatePage({ onClose }: { onClose?: () => void }) {
 
   return (
     <div className="bg-gray-50 py-16 sm:py-24 relative">
-      {/* ❌ CLOSE BUTTON (modal only) */}
-      {onClose && (
-        <button
-          onClick={onClose}
-          className="absolute top-6 right-6 p-2 rounded-full hover:bg-gray-200 transition"
-        >
-          <X className="w-5 h-5" />
-        </button>
-      )}
+      <CloseButton />
 
       <Container>
         {/* HEADER */}
@@ -128,13 +129,12 @@ export default function DonatePage({ onClose }: { onClose?: () => void }) {
               </ul>
             </div>
 
-            {/* RIGHT - FORM */}
+            {/* RIGHT */}
             <div className="p-12 sm:p-16 flex flex-col justify-center bg-white dark:bg-gray-900">
               <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-8">
                 Choose an Amount
               </h2>
 
-              {/* AMOUNT BUTTONS */}
               <div className="grid grid-cols-3 gap-4 mb-6">
                 {["25", "50", "100", "250", "500"].map((amt) => (
                   <button
@@ -153,7 +153,6 @@ export default function DonatePage({ onClose }: { onClose?: () => void }) {
                   </button>
                 ))}
 
-                {/* OTHER */}
                 <button
                   onClick={() => setAmount("other")}
                   className={`h-14 rounded-xl font-bold transition ${
@@ -166,7 +165,6 @@ export default function DonatePage({ onClose }: { onClose?: () => void }) {
                 </button>
               </div>
 
-              {/* CUSTOM INPUT */}
               {amount === "other" && (
                 <input
                   type="number"
@@ -177,7 +175,6 @@ export default function DonatePage({ onClose }: { onClose?: () => void }) {
                 />
               )}
 
-              {/* SUMMARY */}
               <div className="mb-6 text-sm text-gray-500">
                 Donation Amount:{" "}
                 <span className="font-semibold text-gray-900 dark:text-white">
@@ -185,7 +182,6 @@ export default function DonatePage({ onClose }: { onClose?: () => void }) {
                 </span>
               </div>
 
-              {/* BUTTONS */}
               <div className="space-y-4">
                 <Button
                   onClick={handleDonate}
