@@ -1,14 +1,47 @@
 "use client";
 
 import { Container } from "@/components/ui/container";
-import { ContactForm } from "@/components/forms/contact-form";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState, FormEvent } from "react";
+import { Send, CheckCircle2 } from "lucide-react";
 
 export function ContactPage() {
-  return (
-    <section id="contact" className="scroll-mt-24 relative overflow-hidden">
+  const [submitted, setSubmitted] = useState(false);
 
-      {/* 🌈 CINEMATIC BACKGROUND */}
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setSubmitted(true);
+
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("subject", subject);
+    formData.append("message", message);
+
+    try {
+      await fetch(`/api/contact`, {
+        method: "POST",
+        body: formData,
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const inputClasses =
+    "w-full px-4 py-3 rounded-xl bg-white/80 dark:bg-white/5 border border-white/40 dark:border-white/10 text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition";
+
+  return (
+    <section
+      id="contact"
+      className="scroll-mt-24 relative overflow-hidden"
+    >
+      {/* 🌈 BACKGROUND */}
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-blue-50 via-white to-blue-100 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950" />
 
       {/* ✨ GLOW ORBS */}
@@ -24,55 +57,148 @@ export function ContactPage() {
           viewport={{ once: true }}
           className="text-center pt-16 sm:pt-24 mb-16"
         >
-          <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight text-gray-900 dark:text-white">
+          <h1 className="text-4xl sm:text-5xl font-semibold text-gray-900 dark:text-white">
             Contact Us
           </h1>
 
-          <p className="mt-4 max-w-2xl mx-auto text-lg sm:text-xl text-gray-600 dark:text-gray-300 leading-relaxed">
+          <p className="mt-4 max-w-2xl mx-auto text-lg text-gray-600 dark:text-gray-300">
             Have questions or need support? We’re here to help.
           </p>
         </motion.div>
 
-        {/* 📩 FORM CONTAINER */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.96 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="max-w-3xl mx-auto"
-        >
-          <div className="relative rounded-3xl p-[1px] bg-gradient-to-b from-white/60 to-white/0 dark:from-white/10 dark:to-transparent">
-
-            {/* GLASS WRAPPER */}
-            <div className="rounded-3xl bg-white/80 dark:bg-white/5 backdrop-blur-xl border border-white/40 dark:border-white/10 p-6 sm:p-10 shadow-[0_10px_40px_rgba(0,0,0,0.06)]">
-
-              {/* OPTIONAL TOP LABEL */}
-              <div className="mb-6 flex items-center gap-3">
-                <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 flex items-center justify-center text-blue-600 shadow-sm">
-                  ✉️
-                </div>
-                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                  Send us a message
-                </p>
+        {/* 🔥 TWO COLUMN LAYOUT */}
+        <div className="grid lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
+          
+          {/* LEFT SIDE (INFO) */}
+          <motion.div
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="space-y-6"
+          >
+            <div className="flex items-center gap-3">
+              <div className="h-10 w-10 rounded-xl bg-blue-100 flex items-center justify-center text-blue-600">
+                ✉️
               </div>
-
-              {/* FORM */}
-              <ContactForm />
-
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                Get in touch
+              </p>
             </div>
-          </div>
-        </motion.div>
 
-        {/* ✨ FOOT NOTE (SUBTLE TRUST ELEMENT) */}
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          viewport={{ once: true }}
-          className="mt-10 text-center text-sm text-gray-500 dark:text-gray-400"
-        >
+            <h2 className="text-3xl font-semibold text-gray-900 dark:text-white">
+              Let’s Start a Conversation
+            </h2>
+
+            <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+              Have questions about our programs, partnerships, or support services? 
+              Reach out and we’ll respond within 24–48 hours.
+            </p>
+
+            <div className="space-y-3">
+              {[
+                "Free support guidance",
+                "Community & campus programs",
+                "Partnership opportunities",
+              ].map((item) => (
+                <div key={item} className="flex items-center gap-3">
+                  <CheckCircle2
+                    size={16}
+                    className="text-blue-500"
+                  />
+                  <span className="text-sm text-gray-600 dark:text-gray-300">
+                    {item}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* RIGHT SIDE (FORM) */}
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <AnimatePresence mode="wait">
+              {submitted ? (
+                <motion.div
+                  key="success"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="rounded-3xl bg-white/80 dark:bg-white/5 backdrop-blur-xl border border-white/40 dark:border-white/10 p-10 text-center shadow-xl"
+                >
+                  <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-6">
+                    <CheckCircle2 size={28} className="text-blue-600" />
+                  </div>
+
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                    Message Sent
+                  </h3>
+
+                  <p className="text-gray-600 dark:text-gray-300 mt-2">
+                    We'll get back to you within 24–48 hours.
+                  </p>
+                </motion.div>
+              ) : (
+                <motion.form
+                  key="form"
+                  onSubmit={handleSubmit}
+                  className="rounded-3xl bg-white/80 dark:bg-white/5 backdrop-blur-xl border border-white/40 dark:border-white/10 p-6 sm:p-10 space-y-5 shadow-xl"
+                >
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <input
+                      required
+                      placeholder="Your name"
+                      className={inputClasses}
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                    />
+
+                    <input
+                      type="email"
+                      required
+                      placeholder="Email address"
+                      className={inputClasses}
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </div>
+
+                  <input
+                    required
+                    placeholder="Subject"
+                    className={inputClasses}
+                    value={subject}
+                    onChange={(e) => setSubject(e.target.value)}
+                  />
+
+                  <textarea
+                    required
+                    rows={4}
+                    placeholder="Your message..."
+                    className={`${inputClasses} resize-none`}
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                  />
+
+                  <button
+                    type="submit"
+                    className="w-full h-12 rounded-xl bg-blue-600 text-white font-semibold flex items-center justify-center gap-2 hover:bg-blue-500 transition"
+                  >
+                    Send Message <Send size={16} />
+                  </button>
+                </motion.form>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        </div>
+
+        {/* FOOT NOTE */}
+        <p className="mt-10 text-center text-sm text-gray-500 dark:text-gray-400">
           We typically respond within 24–48 hours.
-        </motion.p>
+        </p>
       </Container>
     </section>
   );

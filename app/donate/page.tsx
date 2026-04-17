@@ -2,10 +2,10 @@
 
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
-import { CreditCard, Heart } from "lucide-react";
+import { CreditCard, Heart, X } from "lucide-react"; // 👈 added X
 import { useState } from "react";
 
-export default function DonatePage() {
+export default function DonatePage({ onClose }: { onClose?: () => void }) {
   const [amount, setAmount] = useState("50");
   const [customAmount, setCustomAmount] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -28,7 +28,17 @@ export default function DonatePage() {
 
   if (isSuccess) {
     return (
-      <div className="bg-gray-50 py-16 sm:py-24">
+      <div className="bg-gray-50 py-16 sm:py-24 relative">
+        {/* ❌ CLOSE BUTTON (modal only) */}
+        {onClose && (
+          <button
+            onClick={onClose}
+            className="absolute top-6 right-6 p-2 rounded-full hover:bg-gray-200 transition"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        )}
+
         <Container>
           <div className="max-w-xl mx-auto bg-white rounded-3xl p-10 text-center shadow-xl">
             <div className="text-4xl mb-3">💙</div>
@@ -57,7 +67,17 @@ export default function DonatePage() {
   }
 
   return (
-    <div className="bg-gray-50 py-16 sm:py-24">
+    <div className="bg-gray-50 py-16 sm:py-24 relative">
+      {/* ❌ CLOSE BUTTON (modal only) */}
+      {onClose && (
+        <button
+          onClick={onClose}
+          className="absolute top-6 right-6 p-2 rounded-full hover:bg-gray-200 transition"
+        >
+          <X className="w-5 h-5" />
+        </button>
+      )}
+
       <Container>
         {/* HEADER */}
         <div className="text-center mb-16">

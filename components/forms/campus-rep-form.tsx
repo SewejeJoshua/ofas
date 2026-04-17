@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { X } from "lucide-react"; // 👈 added
 
 const formSchema = z.object({
   fullName: z.string().min(2, "Name must be at least 2 characters."),
@@ -14,7 +15,7 @@ const formSchema = z.object({
   motivation: z.string().min(10, "Tell us more (min 10 chars)."),
 });
 
-export function CampusRepForm() {
+export function CampusRepForm({ onClose }: { onClose?: () => void }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -40,7 +41,17 @@ export function CampusRepForm() {
 
   if (isSuccess) {
     return (
-      <div className="bg-white rounded-2xl p-8 text-center shadow-xl">
+      <div className="bg-white rounded-2xl p-8 text-center shadow-xl relative">
+        {/* ❌ CLOSE BUTTON */}
+        {onClose && (
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-200 transition"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        )}
+
         <div className="text-4xl mb-3">🎉</div>
         <h3 className="text-xl font-semibold">
           Application Received!
@@ -66,8 +77,19 @@ export function CampusRepForm() {
   return (
     <form
       onSubmit={form.handleSubmit(onSubmit)}
-      className="bg-slate-900 text-white p-8 rounded-3xl space-y-6 shadow-2xl"
+      className="bg-slate-900 text-white p-8 rounded-3xl space-y-6 shadow-2xl relative"
     >
+      {/* ❌ CLOSE BUTTON */}
+      {onClose && (
+        <button
+          type="button"
+          onClick={onClose}
+          className="absolute top-4 right-4 p-2 rounded-full hover:bg-white/10 transition"
+        >
+          <X className="w-5 h-5" />
+        </button>
+      )}
+
       <h2 className="text-2xl font-semibold">
         Start a Campus Chapter
       </h2>

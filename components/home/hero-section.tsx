@@ -13,6 +13,7 @@ import {
 } from "framer-motion";
 import { useEffect, useState } from "react";
 import { VolunteerForm } from "@/components/forms/volunteer-form";
+import DonatePage from "@/app/donate/page"; // 👈 IMPORT DONATE PAGE
 
 // 🚀 Lazy load 3D
 const HeroInhaler3D = dynamic(
@@ -29,7 +30,9 @@ const HeroInhaler3D = dynamic(
 
 export function HeroSection() {
   const { scrollY } = useScroll();
-  const [open, setOpen] = useState(false);
+
+  const [volunteerOpen, setVolunteerOpen] = useState(false);
+  const [donateOpen, setDonateOpen] = useState(false); // 👈 NEW
 
   // 🎬 Parallax
   const ySlow = useTransform(scrollY, [0, 500], [0, 80]);
@@ -50,14 +53,17 @@ export function HeroSection() {
 
   // 🔥 lock scroll + ESC close
   useEffect(() => {
-    if (open) {
+    if (volunteerOpen || donateOpen) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
     }
 
     const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key === "Escape") {
+        setVolunteerOpen(false);
+        setDonateOpen(false);
+      }
     };
 
     window.addEventListener("keydown", handleEsc);
@@ -66,7 +72,7 @@ export function HeroSection() {
       document.body.style.overflow = "auto";
       window.removeEventListener("keydown", handleEsc);
     };
-  }, [open]);
+  }, [volunteerOpen, donateOpen]);
 
   return (
     <section className="relative overflow-hidden">
@@ -135,16 +141,17 @@ export function HeroSection() {
               {/* BUTTONS */}
               <div className="flex flex-col sm:flex-row gap-4 w-full">
                 
-                {/* DONATE */}
-                <Link href="/donate">
-                  <Button className="w-full sm:w-auto px-8 py-6 text-lg rounded-full bg-blue-500 text-white hover:scale-105 transition">
-                    Donate Now
-                  </Button>
-                </Link>
-
-                {/* 🔥 JOIN CHAPTER → MODAL */}
+                {/* 🔥 DONATE → MODAL */}
                 <Button
-                  onClick={() => setOpen(true)}
+                  onClick={() => setDonateOpen(true)}
+                  className="w-full sm:w-auto px-8 py-6 text-lg rounded-full bg-blue-500 text-white hover:scale-105 transition"
+                >
+                  Donate Now
+                </Button>
+
+                {/* 🔥 VOLUNTEER */}
+                <Button
+                  onClick={() => setVolunteerOpen(true)}
                   variant="outline"
                   className="w-full sm:w-auto px-8 py-6 text-lg rounded-full hover:scale-105 transition"
                 >
@@ -177,25 +184,29 @@ export function HeroSection() {
         </div>
       </Container>
 
-      {/* 🔥 MODAL */}
+      {/* 🔥 MODALS */}
       <AnimatePresence>
-        {open && (
+        {(volunteerOpen || donateOpen) && (
           <motion.div
-            onClick={() => setOpen(false)} // click outside closes
+            onClick={() => {
+              setVolunteerOpen(false);
+              setDonateOpen(false);
+            }}
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
             <motion.div
-              onClick={(e) => e.stopPropagation()} // prevent closing when clicking inside
+              onClick={(e) => e.stopPropagation()}
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto"
+              className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto"
             >
-              <VolunteerForm />
+              {volunteerOpen && <VolunteerForm />}
+              {donateOpen && <DonatePage />} {/* 👈 SAME FORM */}
             </motion.div>
           </motion.div>
         )}
