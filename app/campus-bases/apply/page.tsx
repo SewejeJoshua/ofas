@@ -8,7 +8,7 @@ import Link from "next/link";
 
 export default function CampusRepApplyPage() {
   return (
-    <div className="bg-gray-50 py-16 sm:py-24">
+    <div className="bg-gray-50 py-16 sm:py-24 pb-24">
       <Container>
 
         <Link href="/campus-bases">

@@ -3,7 +3,7 @@
 import { Container } from "@/components/ui/container";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, FormEvent } from "react";
-import { Send, CheckCircle2 } from "lucide-react";
+import { Send, CheckCircle2, X } from "lucide-react";
 
 export function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
@@ -37,10 +37,8 @@ export function ContactPage() {
     "w-full px-4 py-3 rounded-xl bg-white/80 dark:bg-white/5 border border-white/40 dark:border-white/10 text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition";
 
   return (
-    <section
-      id="contact"
-      className="scroll-mt-24 relative overflow-hidden"
-    >
+    <section id="contact" className="scroll-mt-24 relative overflow-hidden pb-20">
+      
       {/* 🌈 BACKGROUND */}
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-blue-50 via-white to-blue-100 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950" />
 
@@ -66,10 +64,10 @@ export function ContactPage() {
           </p>
         </motion.div>
 
-        {/* 🔥 TWO COLUMN LAYOUT */}
-        <div className="grid lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
-          
-          {/* LEFT SIDE (INFO) */}
+        {/* GRID */}
+        <div className="grid lg:grid-cols-2 gap-12 max-w-5xl mx-auto relative">
+
+          {/* LEFT */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -102,10 +100,7 @@ export function ContactPage() {
                 "Partnership opportunities",
               ].map((item) => (
                 <div key={item} className="flex items-center gap-3">
-                  <CheckCircle2
-                    size={16}
-                    className="text-blue-500"
-                  />
+                  <CheckCircle2 size={16} className="text-blue-500" />
                   <span className="text-sm text-gray-600 dark:text-gray-300">
                     {item}
                   </span>
@@ -114,12 +109,13 @@ export function ContactPage() {
             </div>
           </motion.div>
 
-          {/* RIGHT SIDE (FORM) */}
+          {/* RIGHT */}
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
+            className="relative overflow-visible"
           >
             <AnimatePresence mode="wait">
               {submitted ? (
@@ -127,8 +123,17 @@ export function ContactPage() {
                   key="success"
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="rounded-3xl bg-white/80 dark:bg-white/5 backdrop-blur-xl border border-white/40 dark:border-white/10 p-10 text-center shadow-xl"
+                  className="relative rounded-3xl bg-white/80 dark:bg-white/5 backdrop-blur-xl border border-white/40 dark:border-white/10 p-10 text-center shadow-xl"
                 >
+                  {/* FIXED CLOSE BUTTON */}
+                  <button
+                    type="button"
+                    onClick={() => setSubmitted(false)}
+                    className="fixed top-6 right-6 z-[9999] p-3 rounded-full bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border border-gray-200 dark:border-gray-700 shadow-lg hover:scale-105 transition"
+                  >
+                    <X size={18} />
+                  </button>
+
                   <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-6">
                     <CheckCircle2 size={28} className="text-blue-600" />
                   </div>
@@ -145,8 +150,17 @@ export function ContactPage() {
                 <motion.form
                   key="form"
                   onSubmit={handleSubmit}
-                  className="rounded-3xl bg-white/80 dark:bg-white/5 backdrop-blur-xl border border-white/40 dark:border-white/10 p-6 sm:p-10 space-y-5 shadow-xl"
+                  className="relative rounded-3xl bg-white/80 dark:bg-white/5 backdrop-blur-xl border border-white/40 dark:border-white/10 p-6 sm:p-10 space-y-5 shadow-xl pb-14"
                 >
+                  {/* FIXED CLOSE BUTTON */}
+                  <button
+                    type="button"
+                    onClick={() => setSubmitted(false)}
+                    className="fixed top-6 right-6 z-[9999] p-3 rounded-full bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border border-gray-200 dark:border-gray-700 shadow-lg hover:scale-105 transition"
+                  >
+                    <X size={18} />
+                  </button>
+
                   <div className="grid sm:grid-cols-2 gap-4">
                     <input
                       required
@@ -195,8 +209,8 @@ export function ContactPage() {
           </motion.div>
         </div>
 
-        {/* FOOT NOTE */}
-        <p className="mt-10 text-center text-sm text-gray-500 dark:text-gray-400">
+        {/* FOOT NOTE (EXTRA SPACE ADDED) */}
+        <p className="mt-16 pb-10 text-center text-sm text-gray-500 dark:text-gray-400">
           We typically respond within 24–48 hours.
         </p>
       </Container>

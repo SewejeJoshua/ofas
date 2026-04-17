@@ -2,7 +2,6 @@
 
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
@@ -45,12 +44,14 @@ export function ProgramsPage() {
   }, [open]);
 
   return (
-    <section id="programs" className="scroll-mt-24 relative overflow-hidden">
-      
-      {/* 🌈 LIGHT BLUE CINEMATIC BACKGROUND */}
+    <section
+      id="programs"
+      className="scroll-mt-24 relative overflow-hidden pb-24 sm:pb-32"
+    >
+      {/* 🌈 BACKGROUND */}
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-blue-50 via-white to-blue-100 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950" />
 
-      {/* ✨ GLOW ORBS */}
+      {/* GLOW ORBS */}
       <div className="pointer-events-none absolute -top-32 -left-32 w-[400px] h-[400px] bg-blue-300/30 blur-[120px] rounded-full" />
       <div className="pointer-events-none absolute bottom-0 right-0 w-[350px] h-[350px] bg-sky-300/30 blur-[120px] rounded-full" />
 
@@ -84,7 +85,6 @@ export function ProgramsPage() {
               className="group relative rounded-3xl p-[1px] bg-gradient-to-b from-white/60 to-white/0 dark:from-white/10 dark:to-transparent"
             >
               <div className="h-full rounded-3xl bg-white/80 dark:bg-white/5 backdrop-blur-xl border border-white/40 dark:border-white/10 p-10 shadow-[0_10px_40px_rgba(0,0,0,0.06)] transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-[0_20px_60px_rgba(59,130,246,0.15)]">
-
                 <h3 className="text-2xl font-semibold text-gray-900 dark:text-white">
                   {program.title}
                 </h3>
@@ -96,10 +96,7 @@ export function ProgramsPage() {
                 <div className="mt-8">
                   <Button
                     variant="outline"
-                    className="rounded-full px-6 h-11 border-blue-200 dark:border-gray-700
-                    text-gray-800 dark:text-gray-200
-                    hover:bg-blue-600 hover:text-white
-                    transition-all duration-300 hover:-translate-y-0.5"
+                    className="rounded-full px-6 h-11 border-blue-200 dark:border-gray-700 text-gray-800 dark:text-gray-200 hover:bg-blue-600 hover:text-white transition-all duration-300 hover:-translate-y-0.5"
                   >
                     Learn More
                   </Button>
@@ -109,19 +106,18 @@ export function ProgramsPage() {
           ))}
         </div>
 
-        {/* 🚀 CTA */}
+        {/* 🚀 CTA (FIXED SPACING HERE) */}
         <motion.div
           initial={{ opacity: 0, scale: 0.96 }}
           whileInView={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.7 }}
           viewport={{ once: true }}
-          className="mt-24 relative rounded-3xl overflow-hidden"
+          className="mt-24 mb-10 sm:mb-16 relative rounded-3xl overflow-hidden"
         >
           <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-sky-500" />
           <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_30%_20%,white,transparent_40%)]" />
 
           <div className="relative lg:grid lg:grid-cols-2 items-center">
-            
             {/* TEXT */}
             <div className="px-6 py-14 sm:px-12 lg:px-16">
               <h2 className="text-3xl sm:text-4xl font-semibold text-white tracking-tight">
@@ -132,13 +128,9 @@ export function ProgramsPage() {
                 Start a support group or host a workshop and help families breathe easier.
               </p>
 
-              {/* 🔥 BUTTON NOW OPENS MODAL */}
               <Button
                 onClick={() => setOpen(true)}
-                className="mt-8 rounded-full px-8 h-12 font-semibold
-                bg-white text-blue-600
-                shadow-lg hover:shadow-2xl
-                hover:-translate-y-1 transition-all duration-300"
+                className="mt-8 rounded-full px-8 h-12 font-semibold bg-white text-blue-600 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
               >
                 Become a Rep
               </Button>
@@ -158,7 +150,7 @@ export function ProgramsPage() {
         </motion.div>
       </Container>
 
-      {/* 🔥 MODAL */}
+      {/* MODAL */}
       <AnimatePresence>
         {open && (
           <motion.div

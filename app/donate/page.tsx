@@ -26,20 +26,27 @@ export default function DonatePage({ onClose }: { onClose?: () => void }) {
     setIsSuccess(true);
   }
 
+  // 🔥 FIXED CLOSE BUTTON (VISIBLE ABOVE EVERYTHING)
   const CloseButton = () =>
     onClose ? (
       <button
         onClick={onClose}
         className="
-          fixed top-6 right-6 z-[9999]
-          p-3 rounded-full
-          bg-white/90 dark:bg-gray-900/90
-          backdrop-blur-md
-          shadow-lg border border-gray-200 dark:border-gray-700
-          hover:scale-105 transition
+          fixed top-5 right-5 z-[99999]
+          flex items-center justify-center
+          w-11 h-11
+          rounded-full
+          bg-white/95 dark:bg-gray-900/95
+          backdrop-blur-xl
+          shadow-2xl
+          border border-gray-200 dark:border-gray-700
+          text-gray-700 dark:text-gray-200
+          hover:scale-110 hover:bg-white dark:hover:bg-gray-800
+          transition
+          pointer-events-auto
         "
       >
-        <X className="w-5 h-5 text-gray-700 dark:text-gray-200" />
+        <X className="w-5 h-5" />
       </button>
     ) : null;
 
@@ -93,6 +100,7 @@ export default function DonatePage({ onClose }: { onClose?: () => void }) {
 
         <div className="max-w-5xl mx-auto bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl rounded-[2.5rem] shadow-[0_20px_60px_rgba(8,8,178,0.15)] border border-gray-100/50 dark:border-gray-800 overflow-hidden relative">
           <div className="grid grid-cols-1 md:grid-cols-2">
+            
             {/* LEFT */}
             <div className="p-12 sm:p-16 flex flex-col justify-center bg-brand text-white relative overflow-hidden">
               <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 rounded-full bg-white opacity-5 blur-3xl" />

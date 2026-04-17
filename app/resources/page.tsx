@@ -7,8 +7,10 @@ import { motion } from "framer-motion";
 
 export function ResourcesPage() {
   return (
-    <section id="resources" className="scroll-mt-24 relative overflow-hidden">
-
+    <section
+      id="resources"
+      className="scroll-mt-24 relative overflow-hidden pb-24"
+    >
       {/* 🌈 LIGHT CINEMATIC BACKGROUND */}
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-blue-50 via-white to-blue-100 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950" />
 
@@ -89,30 +91,20 @@ export function ResourcesPage() {
               viewport={{ once: true }}
               className="group relative rounded-3xl p-[1px] bg-gradient-to-b from-white/60 to-white/0 dark:from-white/10 dark:to-transparent"
             >
-              {/* GLASS CARD */}
               <div className="h-full rounded-3xl bg-white/80 dark:bg-white/5 backdrop-blur-xl border border-white/40 dark:border-white/10 p-8 shadow-[0_10px_40px_rgba(0,0,0,0.06)] transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-[0_20px_60px_rgba(59,130,246,0.15)]">
 
-                {/* ICON */}
-                <div className="h-12 w-12 rounded-2xl flex items-center justify-center mb-6
-                  bg-gradient-to-br from-blue-100 to-blue-50
-                  text-blue-600
-                  group-hover:scale-110 group-hover:rotate-3
-                  transition-all duration-300 shadow-sm"
-                >
+                <div className="h-12 w-12 rounded-2xl flex items-center justify-center mb-6 bg-gradient-to-br from-blue-100 to-blue-50 text-blue-600 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-sm">
                   {item.icon}
                 </div>
 
-                {/* TITLE */}
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                   {item.title}
                 </h3>
 
-                {/* DESC */}
                 <p className="mt-3 text-gray-600 dark:text-gray-300 leading-relaxed">
                   {item.desc}
                 </p>
 
-                {/* ACTION */}
                 <button className="mt-6 text-blue-600 font-semibold flex items-center gap-1 group-hover:gap-2 transition-all duration-300">
                   {item.action}
                   <span>→</span>

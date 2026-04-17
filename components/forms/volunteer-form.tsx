@@ -51,22 +51,28 @@ export function VolunteerForm({ onClose }: Props) {
     form.reset();
   }
 
+  // 🔥 FIXED CLOSE BUTTON (ALWAYS VISIBLE ABOVE NAV + MODAL)
   const CloseButton = () =>
     onClose ? (
       <button
         type="button"
         onClick={onClose}
         className="
-          fixed top-6 right-6 z-[9999]
-          p-3 rounded-full
-          bg-white/90 dark:bg-gray-900/90
-          backdrop-blur-md
+          fixed top-5 right-5 z-[99999]
+          w-11 h-11
+          flex items-center justify-center
+          rounded-full
+          bg-white/95 dark:bg-gray-900/95
+          backdrop-blur-xl
           border border-gray-200 dark:border-gray-700
-          shadow-lg
-          hover:scale-105 transition
+          shadow-2xl
+          text-gray-700 dark:text-gray-200
+          hover:scale-110 hover:bg-white dark:hover:bg-gray-800
+          transition
+          pointer-events-auto
         "
       >
-        <X size={20} className="text-gray-700 dark:text-gray-200" />
+        <X size={20} />
       </button>
     ) : null;
 
