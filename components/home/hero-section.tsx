@@ -49,11 +49,9 @@ export function HeroSection() {
     setDonateOpen(true);
   };
 
-  // Parallax
   const ySlow = useTransform(scrollY, [0, 500], [0, 80]);
   const yFast = useTransform(scrollY, [0, 500], [0, -60]);
 
-  // Mouse glow
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
@@ -66,7 +64,6 @@ export function HeroSection() {
     return () => window.removeEventListener("mousemove", move);
   }, []);
 
-  // Lock scroll + ESC close
   useEffect(() => {
     if (volunteerOpen || donateOpen) {
       document.body.style.overflow = "hidden";
@@ -87,10 +84,8 @@ export function HeroSection() {
 
   return (
     <section className="relative overflow-hidden">
-      {/* BACKGROUND */}
       <div className="absolute inset-0 -z-20 bg-gradient-to-b from-blue-50 via-white to-blue-100 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950" />
 
-      {/* ORBS */}
       <motion.div
         style={{ y: ySlow }}
         className="absolute -top-40 -left-40 w-[500px] h-[500px] bg-blue-300/30 blur-[120px] rounded-full -z-10"
@@ -100,7 +95,6 @@ export function HeroSection() {
         className="absolute top-40 -right-40 w-[400px] h-[400px] bg-sky-300/30 blur-[120px] rounded-full -z-10"
       />
 
-      {/* MOUSE LIGHT */}
       <motion.div
         style={{
           x: mouseX,
@@ -147,7 +141,6 @@ export function HeroSection() {
             <div className="mt-10 flex flex-col items-center lg:items-start gap-6">
 
               <div className="flex flex-col sm:flex-row gap-4 w-full">
-
                 <Button
                   onClick={openDonate}
                   className="w-full sm:w-auto px-8 py-6 text-lg rounded-full bg-blue-500 text-white hover:scale-105 transition"
@@ -162,22 +155,36 @@ export function HeroSection() {
                 >
                   Join a Chapter
                 </Button>
-
               </div>
 
-              <div className="flex gap-6 text-sm text-gray-600 dark:text-gray-300">
-                <div>
-                  <strong className="text-gray-900 dark:text-white">500+</strong>
-                  <p>Families Helped</p>
+              {/* ✅ IMPROVED STATS */}
+              <div className="flex items-center gap-4 text-gray-600 dark:text-gray-300">
+                
+                <div className="text-center">
+                  <p className="text-xl font-bold text-gray-900 dark:text-white">
+                    500+
+                  </p>
+                  <p className="text-sm">Families Helped</p>
                 </div>
-                <div>
-                  <strong className="text-gray-900 dark:text-white">50+</strong>
-                  <p>Workshops</p>
+
+                <span className="text-gray-400">|</span>
+
+                <div className="text-center">
+                  <p className="text-xl font-bold text-gray-900 dark:text-white">
+                    50+
+                  </p>
+                  <p className="text-sm">Workshops</p>
                 </div>
-                <div>
-                  <strong className="text-gray-900 dark:text-white">10+</strong>
-                  <p>Chapters</p>
+
+                <span className="text-gray-400">|</span>
+
+                <div className="text-center">
+                  <p className="text-xl font-bold text-gray-900 dark:text-white">
+                    10+
+                  </p>
+                  <p className="text-sm">Chapters</p>
                 </div>
+
               </div>
 
             </div>
@@ -208,13 +215,8 @@ export function HeroSection() {
               exit={{ scale: 0.9, opacity: 0 }}
               className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto"
             >
-              {volunteerOpen && (
-                <VolunteerForm onClose={closeAll} />
-              )}
-
-              {donateOpen && (
-                <DonatePage onClose={closeAll} />
-              )}
+              {volunteerOpen && <VolunteerForm onClose={closeAll} />}
+              {donateOpen && <DonatePage onClose={closeAll} />}
             </motion.div>
           </motion.div>
         )}
