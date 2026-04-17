@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { X } from "lucide-react";
 
 const formSchema = z.object({
   fullName: z.string().min(2, "Name must be at least 2 characters."),
@@ -17,7 +18,11 @@ const formSchema = z.object({
   }),
 });
 
-export function VolunteerForm() {
+type Props = {
+  onClose?: () => void;
+};
+
+export function VolunteerForm({ onClose }: Props) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -48,7 +53,17 @@ export function VolunteerForm() {
 
   if (isSuccess) {
     return (
-      <div className="bg-white rounded-2xl p-8 text-center shadow-xl border">
+      <div className="bg-white rounded-2xl p-8 text-center shadow-xl border relative">
+        {/* ❌ CLOSE BUTTON */}
+        {onClose && (
+          <button
+            onClick={onClose}
+            className="absolute top-3 right-3 text-gray-500 hover:text-black transition"
+          >
+            <X size={20} />
+          </button>
+        )}
+
         <div className="text-4xl mb-3">🎉</div>
         <h3 className="text-xl font-semibold text-gray-900">
           Application received!
@@ -74,10 +89,21 @@ export function VolunteerForm() {
   return (
     <form
       onSubmit={form.handleSubmit(onSubmit)}
-      className="w-full bg-slate-900 text-white p-6 sm:p-8 rounded-3xl shadow-2xl space-y-6"
+      className="relative w-full bg-slate-900 text-white p-6 sm:p-8 rounded-3xl shadow-2xl space-y-6"
     >
+      {/* ❌ CLOSE BUTTON */}
+      {onClose && (
+        <button
+          type="button"
+          onClick={onClose}
+          className="absolute top-4 right-4 text-gray-300 hover:text-white transition"
+        >
+          <X size={22} />
+        </button>
+      )}
+
       {/* HEADER */}
-      <div className="space-y-1">
+      <div className="space-y-1 pr-8">
         <h2 className="text-2xl font-semibold">Volunteer Application</h2>
         <p className="text-sm text-gray-400">
           Fill in your details to become a campus rep.
@@ -146,11 +172,7 @@ export function VolunteerForm() {
 
       {/* CONSENT */}
       <label className="flex items-start gap-3 text-sm text-gray-300">
-        <input
-          type="checkbox"
-          {...form.register("consent")}
-          className="mt-1"
-        />
+        <input type="checkbox" {...form.register("consent")} className="mt-1" />
         <span>
           I agree to be contacted about volunteer opportunities.
         </span>
