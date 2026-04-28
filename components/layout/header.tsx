@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
-import DonatePage from "@/components/DonatePage"; // ✅ adjust path if needed
+import DonatePage from "@/app/donate/page";
 
 const navigation = [
   { name: "About", href: "/#about" },
