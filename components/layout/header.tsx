@@ -2,10 +2,14 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
+import {
+  motion,
+  AnimatePresence,
+} from "framer-motion";
 import DonatePage from "@/app/donate/page";
 
 const navigation = [
@@ -18,30 +22,39 @@ const navigation = [
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [showDonate, setShowDonate] = useState(false); // ✅ modal state
+  const [donateOpen, setDonateOpen] = useState(false);
+
+  const closeDonate = () => setDonateOpen(false);
+
+  // 🔒 Lock scroll + ESC close
+  useEffect(() => {
+    if (donateOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeDonate();
+    };
+
+    window.addEventListener("keydown", handleEsc);
+    return () => {
+      document.body.style.overflow = "auto";
+      window.removeEventListener("keydown", handleEsc);
+    };
+  }, [donateOpen]);
 
   return (
     <>
-      {/* 🔥 DONATE MODAL */}
-      {showDonate && (
-        <div className="fixed inset-0 z-[9999] bg-black/60 backdrop-blur-sm overflow-y-auto">
-          <DonatePage onClose={() => setShowDonate(false)} />
-        </div>
-      )}
-
-      <header
-        className="
-          sticky top-0 z-40
-          backdrop-blur-2xl bg-white/60 dark:bg-gray-900/60
-          border-b border-white/20 dark:border-gray-800/50
-          shadow-[0_8px_30px_rgba(0,0,0,0.04)]
-        "
-      >
+      <header className="sticky top-0 z-40 backdrop-blur-2xl bg-white/60 dark:bg-gray-900/60 border-b border-white/20 dark:border-gray-800/50 shadow-[0_8px_30px_rgba(0,0,0,0.04)]">
+        
         {/* Glow */}
         <div className="absolute inset-0 -z-10 bg-gradient-to-r from-sky-100/40 via-transparent to-blue-100/40 dark:from-sky-900/10 dark:to-blue-900/10" />
 
         <Container>
           <div className="flex items-center h-20">
+            
             {/* LOGO */}
             <Link href="/" className="flex items-center gap-3 shrink-0 group">
               <div className="p-[2px] rounded-full bg-gradient-to-tr from-sky-400/40 via-blue-300/20 to-transparent group-hover:from-sky-400/70 transition">
@@ -61,36 +74,36 @@ export function Header() {
               </span>
             </Link>
 
-            {/* RIGHT SIDE */}
+            {/* RIGHT */}
             <div className="ml-auto flex items-center gap-8">
+              
               {/* DESKTOP NAV */}
               <nav className="hidden xl:flex items-center gap-8">
                 {navigation.map((item) => (
                   <Link
                     key={item.name}
                     href={item.href}
-                    className="group relative text-sm font-semibold text-gray-600 dark:text-gray-300 transition-colors hover:text-sky-600 dark:hover:text-sky-400"
+                    className="group relative text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-sky-600 dark:hover:text-sky-400 transition"
                   >
                     {item.name}
-                    <span className="absolute left-0 -bottom-1 h-[2px] w-0 bg-sky-400 transition-all duration-300 group-hover:w-full"></span>
+                    <span className="absolute left-0 -bottom-1 h-[2px] w-0 bg-sky-400 transition-all duration-300 group-hover:w-full" />
                   </Link>
                 ))}
               </nav>
 
-              {/* ✅ CTA (NOW OPENS MODAL) */}
+              {/* ✅ DONATE BUTTON */}
               <Button
-                onClick={() => setShowDonate(true)}
-                className="hidden md:block rounded-full px-7 h-11 font-semibold shadow-md hover:shadow-xl transition-all duration-300 bg-gradient-to-r from-sky-500 to-blue-400 text-white hover:-translate-y-0.5"
+                onClick={() => setDonateOpen(true)}
+                className="hidden md:block rounded-full px-7 h-11 font-semibold shadow-md hover:shadow-xl transition bg-gradient-to-r from-sky-500 to-blue-400 text-white hover:-translate-y-0.5"
               >
                 Donate
               </Button>
 
-              {/* MOBILE TOGGLE */}
+              {/* MOBILE MENU TOGGLE */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="xl:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition"
               >
-                <span className="sr-only">Toggle menu</span>
                 {mobileMenuOpen ? (
                   <X className="h-6 w-6 text-gray-700 dark:text-gray-200" />
                 ) : (
@@ -103,13 +116,13 @@ export function Header() {
 
         {/* MOBILE MENU */}
         <div
-          className={`xl:hidden transition-all duration-300 ease-in-out ${
+          className={`xl:hidden transition-all duration-300 ${
             mobileMenuOpen
-              ? "max-h-[500px] opacity-100 translate-y-0"
-              : "max-h-0 opacity-0 -translate-y-4 overflow-hidden"
+              ? "max-h-[500px] opacity-100"
+              : "max-h-0 opacity-0 overflow-hidden"
           }`}
         >
-          <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-2xl border-t border-gray-200/40 dark:border-gray-800 px-4 py-5 space-y-3 shadow-2xl">
+          <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-2xl border-t px-4 py-5 space-y-3 shadow-2xl">
             {navigation.map((item) => (
               <Link
                 key={item.name}
@@ -121,19 +134,42 @@ export function Header() {
               </Link>
             ))}
 
-            {/* ✅ MOBILE DONATE BUTTON */}
+            {/* MOBILE DONATE */}
             <Button
               onClick={() => {
                 setMobileMenuOpen(false);
-                setShowDonate(true);
+                setDonateOpen(true);
               }}
-              className="w-full mt-3 rounded-full h-11 font-semibold bg-gradient-to-r from-sky-500 to-blue-400 text-white shadow-md hover:shadow-lg transition"
+              className="w-full mt-3 rounded-full h-11 font-semibold bg-gradient-to-r from-sky-500 to-blue-400 text-white"
             >
               Donate
             </Button>
           </div>
         </div>
       </header>
+
+      {/* 🔥 DONATE MODAL (MATCHES HERO) */}
+      <AnimatePresence>
+        {donateOpen && (
+          <motion.div
+            onClick={closeDonate}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div
+              onClick={(e) => e.stopPropagation()}
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto"
+            >
+              <DonatePage onClose={closeDonate} />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
