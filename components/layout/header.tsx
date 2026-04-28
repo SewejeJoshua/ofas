@@ -18,16 +18,16 @@ const navigation = [
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  const handleDonateClick = () => {
+    const section = document.getElementById("donate");
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    }
+    setMobileMenuOpen(false);
+  };
+
   return (
-    <header
-      className="
-        sticky top-0 z-40
-        backdrop-blur-2xl bg-white/60 dark:bg-gray-900/60
-        border-b border-white/20 dark:border-gray-800/50
-        shadow-[0_8px_30px_rgba(0,0,0,0.04)]
-      "
-    >
-      {/* 🌊 Subtle glow */}
+    <header className="sticky top-0 z-40 backdrop-blur-2xl bg-white/60 dark:bg-gray-900/60 border-b border-white/20 dark:border-gray-800/50 shadow-[0_8px_30px_rgba(0,0,0,0.04)]">
       <div className="absolute inset-0 -z-10 bg-gradient-to-r from-sky-100/40 via-transparent to-blue-100/40 dark:from-sky-900/10 dark:to-blue-900/10" />
 
       <Container>
@@ -62,19 +62,18 @@ export function Header() {
                   className="group relative text-sm font-semibold text-gray-600 dark:text-gray-300 transition-colors hover:text-sky-600 dark:hover:text-sky-400"
                 >
                   {item.name}
-
-                  {/* underline fix */}
                   <span className="absolute left-0 -bottom-1 h-[2px] w-0 bg-sky-400 transition-all duration-300 group-hover:w-full"></span>
                 </Link>
               ))}
             </nav>
 
-            {/* CTA */}
-            <Link href="/donate" className="hidden md:block">
-              <Button className="rounded-full px-7 h-11 font-semibold shadow-md hover:shadow-xl transition-all duration-300 bg-gradient-to-r from-sky-500 to-blue-400 text-white hover:-translate-y-0.5">
-                Donate
-              </Button>
-            </Link>
+            {/* CTA (UPDATED) */}
+            <Button
+              onClick={handleDonateClick}
+              className="hidden md:block rounded-full px-7 h-11 font-semibold shadow-md hover:shadow-xl transition-all duration-300 bg-gradient-to-r from-sky-500 to-blue-400 text-white hover:-translate-y-0.5"
+            >
+              Donate
+            </Button>
 
             {/* MOBILE TOGGLE */}
             <button
@@ -92,7 +91,7 @@ export function Header() {
         </div>
       </Container>
 
-      {/* 📱 MOBILE MENU */}
+      {/* MOBILE MENU */}
       <div
         className={`xl:hidden transition-all duration-300 ease-in-out ${
           mobileMenuOpen
@@ -112,11 +111,13 @@ export function Header() {
             </Link>
           ))}
 
-          <Link href="/donate" onClick={() => setMobileMenuOpen(false)}>
-            <Button className="w-full mt-3 rounded-full h-11 font-semibold bg-gradient-to-r from-sky-500 to-blue-400 text-white shadow-md hover:shadow-lg transition">
-              Donate
-            </Button>
-          </Link>
+          {/* MOBILE DONATE BUTTON (UPDATED) */}
+          <Button
+            onClick={handleDonateClick}
+            className="w-full mt-3 rounded-full h-11 font-semibold bg-gradient-to-r from-sky-500 to-blue-400 text-white shadow-md hover:shadow-lg transition"
+          >
+            Donate
+          </Button>
         </div>
       </div>
     </header>
