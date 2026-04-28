@@ -59,10 +59,10 @@ export function Footer() {
 
                             <ul className="space-y-4">
                                 {[
-                                    ["About Us", "/about"],
-                                    ["Programs", "/programs"],
-                                    ["Events", "/events"],
-                                    ["Contact", "/contact"],
+                                    ["About Us", "/3about"],
+                                    ["Programs", "/#programs"],
+                                    ["Events", "/#events"],
+                                    ["Contact", "/#contact"],
                                 ].map(([label, href]) => (
                                     <li key={href}>
                                         <Link
