@@ -23,14 +23,14 @@ const desktopNavigation: NavItem[] = [
   { name: "Resources", href: "/#resources" },
   { name: "Campus Bases", href: "/#campus-bases" },
   { name: "Gallery", href: "/gallery" },
-  { name: "Test", action: "test" }, // ✅ FIXED
+  { name: "Test", action: "test" },
   { name: "Contact", href: "/#contact" },
 ];
 
 const mobileNavigation: NavItem[] = [
   { name: "Programs", href: "/#programs" },
   { name: "Gallery", href: "/gallery" },
-  { name: "Test", action: "test" }, // ✅ FIXED
+  { name: "Test", action: "test" },
 ];
 
 export function Header() {
