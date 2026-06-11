@@ -1,9 +1,9 @@
-import AdminOfasHome from "@/components/admin/AdminOfasHome";
+import React from "react";
 
-export default function DashboardLayout({
+export default function Layout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <AdminOfasHome>{children}</AdminOfasHome>;
+  return <>{children}</>;
 }
