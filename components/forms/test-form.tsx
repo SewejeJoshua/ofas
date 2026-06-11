@@ -1,273 +1,190 @@
 "use client";
 
-import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { useEffect, useState } from "react";
+import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
+import { Menu, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
-type ResultType = {
-  full_name: string;
-  total_score: number;
-  status: string;
-  recommendation: string;
+import DonatePage from "@/app/donate/page";
+import AsthmaScorecardForm from "@/components/forms/asthma-scorecard-form";
+
+type NavItem = {
+  name: string;
+  href?: string;
+  action?: "donate" | "test";
 };
 
-export default function AsthmaScorecardForm() {
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<ResultType | null>(null);
+const desktopNavigation: NavItem[] = [
+  { name: "About", href: "/#about" },
+  { name: "Programs", href: "/#programs" },
+  { name: "Resources", href: "/#resources" },
+  { name: "Campus Bases", href: "/#campus-bases" },
+  { name: "Gallery", href: "/gallery" },
+  { name: "Test", action: "test" },
+  { name: "Contact", href: "/#contact" },
+];
 
-  const API_URL = process.env.NEXT_PUBLIC_OFAS_API_URL;
+const mobileNavigation: NavItem[] = [
+  { name: "Programs", href: "/#programs" },
+  { name: "Gallery", href: "/gallery" },
+  { name: "Test", action: "test" },
+];
 
-  const [form, setForm] = useState({
-    full_name: "",
-    volunteer_id: "",
-    state_lga: "",
-    phone_number: "",
-    date_of_birth: "",
-    q1_answer: "",
-    q2_answer: "",
-    q3_answer: "",
-    q4_answer: "",
-    q5_answer: "",
-  });
+export function Header() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeModal, setActiveModal] = useState<null | "donate" | "test">(null);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+  const closeModal = () => setActiveModal(null);
 
-  const handleSubmit = async () => {
-    setLoading(true);
-    setResult(null);
+  useEffect(() => {
+    document.body.style.overflow = activeModal ? "hidden" : "auto";
 
-    try {
-      const res = await fetch(
-        `${API_URL?.replace(/\/$/, "")}/api/asthma-assessments/`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(form),
-        }
-      );
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeModal();
+    };
 
-      const data = await res.json();
+    window.addEventListener("keydown", handleEsc);
 
-      if (!res.ok) {
-        throw new Error(data?.detail || "Submission failed");
-      }
-
-      setResult({
-        full_name: data.full_name,
-        total_score: data.total_score,
-        status: data.status,
-        recommendation: data.recommendation,
-      });
-
-      // reset form
-      setForm({
-        full_name: "",
-        volunteer_id: "",
-        state_lga: "",
-        phone_number: "",
-        date_of_birth: "",
-        q1_answer: "",
-        q2_answer: "",
-        q3_answer: "",
-        q4_answer: "",
-        q5_answer: "",
-      });
-    } catch (err) {
-      setResult({
-        full_name: form.full_name || "User",
-        total_score: 0,
-        status: "error",
-        recommendation:
-          "Submission failed. Please check your connection and try again.",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+    return () => {
+      document.body.style.overflow = "auto";
+      window.removeEventListener("keydown", handleEsc);
+    };
+  }, [activeModal]);
 
   return (
-    <div className="bg-white rounded-2xl shadow-xl p-6 md:p-8 text-gray-900">
+    <>
+      <header className="sticky top-0 z-40 backdrop-blur-2xl bg-white/60 dark:bg-gray-900/60 border-b border-white/20 dark:border-gray-800/50">
+        <Container>
+          <div className="flex items-center h-20">
 
-      {/* ================= RESULT POPUP ================= */}
-      {result && (
-        <div className="mb-6 p-5 rounded-xl border bg-green-50 border-green-200">
-          <h2 className="text-xl font-bold text-green-800">
-            Assessment Completed 🎉
-          </h2>
+            {/* LOGO */}
+            <Link href="/" className="flex items-center gap-3">
+              <div className="relative h-12 w-12 rounded-full overflow-hidden bg-black">
+                <Image
+                  src="/logo.jpg"
+                  alt="OFAS Logo"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <span className="hidden md:block text-2xl font-bold">OFAS</span>
+            </Link>
 
-          <div className="mt-3 space-y-1 text-sm">
-            <p><b>Full Name:</b> {result.full_name}</p>
-            <p><b>Total Score:</b> {result.total_score} / 25</p>
-            <p>
-              <b>Status:</b>{" "}
-              <span className="capitalize text-green-700 font-semibold">
-                {result.status}
-              </span>
-            </p>
+            {/* NAV */}
+            <div className="ml-auto flex items-center gap-6">
+
+              <nav className="hidden xl:flex gap-6">
+                {desktopNavigation.map((item) =>
+                  item.href ? (
+                    <Link
+                      key={item.name}
+                      href={item.href}
+                      className="text-sm font-semibold"
+                    >
+                      {item.name}
+                    </Link>
+                  ) : (
+                    <button
+                      key={item.name}
+                      onClick={() => setActiveModal(item.action!)}
+                      className="text-sm font-semibold"
+                    >
+                      {item.name}
+                    </button>
+                  )
+                )}
+              </nav>
+
+              <Button
+                onClick={() => setActiveModal("donate")}
+                className="hidden md:block rounded-full bg-sky-500 text-white"
+              >
+                Donate
+              </Button>
+
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="xl:hidden"
+              >
+                {mobileMenuOpen ? <X /> : <Menu />}
+              </button>
+            </div>
           </div>
+        </Container>
 
-          <div className="mt-3 text-sm text-gray-700">
-            <b>Recommendation:</b> {result.recommendation}
-          </div>
+        {/* MOBILE */}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              className="xl:hidden overflow-hidden border-t bg-white"
+            >
+              <div className="p-4 space-y-3">
+                {mobileNavigation.map((item) =>
+                  item.href ? (
+                    <Link
+                      key={item.name}
+                      href={item.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      {item.name}
+                    </Link>
+                  ) : (
+                    <button
+                      key={item.name}
+                      onClick={() => {
+                        setMobileMenuOpen(false);
+                        setActiveModal(item.action!);
+                      }}
+                    >
+                      {item.name}
+                    </button>
+                  )
+                )}
 
-          <Button className="mt-4" onClick={() => setResult(null)}>
-            Take Again
-          </Button>
-        </div>
-      )}
+                <Button
+                  onClick={() => setActiveModal("donate")}
+                  className="w-full"
+                >
+                  Donate
+                </Button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </header>
 
-      {/* ================= FORM ================= */}
-      {!result && (
-        <>
-          <h2 className="text-xl font-bold mb-4">
-            OFAS ASTHMA CONTROL SCORECARD (AC–OFAS)
-          </h2>
-
-          <p className="text-sm text-gray-600 mb-6">
-            "Winning Everyday Despite Asthma"
-          </p>
-
-          {/* BASIC INFO */}
-          <div className="grid gap-3 mb-6">
-            <input
-              name="full_name"
-              placeholder="Full Name"
-              className="border p-3 rounded-lg"
-              value={form.full_name}
-              onChange={handleChange}
-            />
-
-            <input
-              name="volunteer_id"
-              placeholder="OFAS Volunteer ID (optional)"
-              className="border p-3 rounded-lg"
-              value={form.volunteer_id}
-              onChange={handleChange}
-            />
-
-            <input
-              name="state_lga"
-              placeholder="State / LGA"
-              className="border p-3 rounded-lg"
-              value={form.state_lga}
-              onChange={handleChange}
-            />
-
-            <input
-              name="phone_number"
-              placeholder="Phone Number"
-              className="border p-3 rounded-lg"
-              value={form.phone_number}
-              onChange={handleChange}
-            />
-
-            <input
-              type="date"
-              name="date_of_birth"
-              className="border p-3 rounded-lg"
-              value={form.date_of_birth}
-              onChange={handleChange}
-            />
-          </div>
-
-          {/* INSTRUCTIONS */}
-          <div className="text-sm bg-blue-50 p-4 rounded-xl border mb-6">
-            <p className="font-semibold mb-2">📊 How to Use:</p>
-            <ul className="list-disc pl-5 space-y-1 text-gray-700">
-              <li>Answer based on the last 4 weeks</li>
-              <li>Select the option that best matches your experience</li>
-              <li>All questions are scored from 1–5</li>
-              <li>Total score determines asthma control level</li>
-            </ul>
-          </div>
-
-          {/* QUESTIONS */}
-
-          <select
-            name="q1_answer"
-            className="border p-3 rounded-lg w-full mb-3"
-            value={form.q1_answer}
-            onChange={handleChange}
+      {/* MODALS */}
+      <AnimatePresence>
+        {activeModal && (
+          <motion.div
+            onClick={closeModal}
+            className="fixed inset-0 z-[999] flex items-center justify-center bg-black/60 p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
           >
-            <option value="">Q1: Activity limitation</option>
-            <option value="1">All of the time (1)</option>
-            <option value="2">Most of the time (2)</option>
-            <option value="3">Some of the time (3)</option>
-            <option value="4">A little of the time (4)</option>
-            <option value="5">None of the time (5)</option>
-          </select>
+            <motion.div
+              onClick={(e) => e.stopPropagation()}
+              className="w-full max-w-3xl max-h-[90vh] overflow-y-auto"
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.9 }}
+            >
+              {activeModal === "donate" && (
+                <DonatePage onClose={closeModal} />
+              )}
 
-          <select
-            name="q2_answer"
-            className="border p-3 rounded-lg w-full mb-3"
-            value={form.q2_answer}
-            onChange={handleChange}
-          >
-            <option value="">Q2: Shortness of breath</option>
-            <option value="1">More than once a day (1)</option>
-            <option value="2">Once a day (2)</option>
-            <option value="3">3–6 times a week (3)</option>
-            <option value="4">1–2 times a week (4)</option>
-            <option value="5">Not at all (5)</option>
-          </select>
-
-          <select
-            name="q3_answer"
-            className="border p-3 rounded-lg w-full mb-3"
-            value={form.q3_answer}
-            onChange={handleChange}
-          >
-            <option value="">Q3: Night symptoms</option>
-            <option value="1">4+ nights/week (1)</option>
-            <option value="2">2–3 nights/week (2)</option>
-            <option value="3">Once/week (3)</option>
-            <option value="4">1–2 times (4)</option>
-            <option value="5">Not at all (5)</option>
-          </select>
-
-          <select
-            name="q4_answer"
-            className="border p-3 rounded-lg w-full mb-3"
-            value={form.q4_answer}
-            onChange={handleChange}
-          >
-            <option value="">Q4: Rescue inhaler use</option>
-            <option value="1">3+ times/day (1)</option>
-            <option value="2">1–2 times/day (2)</option>
-            <option value="3">2–3 times/week (3)</option>
-            <option value="4">Once/week or less (4)</option>
-            <option value="5">Not at all (5)</option>
-          </select>
-
-          <select
-            name="q5_answer"
-            className="border p-3 rounded-lg w-full mb-5"
-            value={form.q5_answer}
-            onChange={handleChange}
-          >
-            <option value="">Q5: Overall control</option>
-            <option value="1">Not controlled at all (1)</option>
-            <option value="2">Poorly controlled (2)</option>
-            <option value="3">Somewhat controlled (3)</option>
-            <option value="4">Well controlled (4)</option>
-            <option value="5">Completely controlled (5)</option>
-          </select>
-
-          {/* SUBMIT */}
-          <Button
-            className="w-full"
-            onClick={handleSubmit}
-            disabled={loading}
-          >
-            {loading ? "Submitting..." : "Submit Assessment"}
-          </Button>
-        </>
-      )}
-    </div>
+              {activeModal === "test" && <AsthmaScorecardForm />}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
