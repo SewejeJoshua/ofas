@@ -1,219 +1,282 @@
 "use client";
 
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
-const formSchema = z.object({
-  name: z.string().min(2, { message: "Name is required." }),
-  email: z.string().email({ message: "Invalid email address." }),
-  subject: z.string().min(5, { message: "Subject is required." }),
-  message: z
-    .string()
-    .min(10, { message: "Message must be at least 10 characters." }),
-});
+type ResultType = {
+  full_name: string;
+  volunteer_id: string;
+  state_lga: string;
+  phone_number: string;
+  date_of_birth: string;
+  q1_answer: string;
+  q2_answer: string;
+  q3_answer: string;
+  q4_answer: string;
+  q5_answer: string;
+  total_score: number;
+  status: string;
+  recommendation: string;
+};
 
-type FormData = z.infer<typeof formSchema>;
-
-export function ContactForm() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
+export default function AsthmaScorecardForm() {
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState<ResultType | null>(null);
+  const [error, setError] = useState("");
 
   const API_URL = process.env.NEXT_PUBLIC_OFAS_API_URL;
 
-  const form = useForm<FormData>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      subject: "",
-      message: "",
-    },
+  const [form, setForm] = useState({
+    full_name: "",
+    volunteer_id: "",
+    state_lga: "",
+    phone_number: "",
+    date_of_birth: "",
+    q1_answer: "",
+    q2_answer: "",
+    q3_answer: "",
+    q4_answer: "",
+    q5_answer: "",
   });
 
-  async function onSubmit(values: FormData) {
-    setIsSubmitting(true);
-    setIsSuccess(false);
-    setErrorMsg("");
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async () => {
+    setLoading(true);
+    setError("");
+    setResult(null);
 
     try {
-      console.log("=================================");
-      console.log("API URL:", API_URL);
-      console.log("Submitting data:", values);
-      console.log(
-        "Endpoint:",
-        `${API_URL}/api/contact-us/`
-      );
-      console.log("=================================");
-
       if (!API_URL) {
-        throw new Error(
-          "NEXT_PUBLIC_OFAS_API_URL is not defined."
-        );
+        throw new Error("API URL is missing");
       }
 
-      const res = await fetch(`${API_URL}/api/contact-us/`, {
+      const endpoint = `${API_URL.replace(/\/$/, "")}/api/asthma-assessments/`;
+
+      const res = await fetch(endpoint, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Accept: "application/json",
         },
-        body: JSON.stringify(values),
+        body: JSON.stringify(form),
       });
 
-      console.log("Response Status:", res.status);
+      const text = await res.text();
 
-      const responseText = await res.text();
-
-      console.log("Response Body:", responseText);
-
-      let responseData = null;
-
+      let data: any;
       try {
-        responseData = JSON.parse(responseText);
+        data = JSON.parse(text);
       } catch {
-        console.log("Response is not JSON");
+        data = text;
       }
 
       if (!res.ok) {
         throw new Error(
-          responseData?.message ||
-            responseData?.detail ||
-            responseText ||
-            "Failed to send message"
+          data?.detail ||
+            data?.message ||
+            (typeof data === "string" ? data : "Submission failed")
         );
       }
 
-      console.log("Success Response:", responseData);
+      setResult(data);
 
-      setIsSuccess(true);
-      form.reset();
-    } catch (error: any) {
-      console.error("Contact Form Error:", error);
-      setErrorMsg(error.message || "Something went wrong");
+      setForm({
+        full_name: "",
+        volunteer_id: "",
+        state_lga: "",
+        phone_number: "",
+        date_of_birth: "",
+        q1_answer: "",
+        q2_answer: "",
+        q3_answer: "",
+        q4_answer: "",
+        q5_answer: "",
+      });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong");
     } finally {
-      setIsSubmitting(false);
+      setLoading(false);
     }
-  }
-
-  if (isSuccess) {
-    return (
-      <div className="bg-green-50 border border-green-200 text-green-700 p-6 rounded-lg text-center">
-        <h3 className="text-xl font-bold mb-2">
-          Message Sent!
-        </h3>
-
-        <p>
-          Thank you for reaching out. We will get back to
-          you shortly.
-        </p>
-
-        <Button
-          onClick={() => setIsSuccess(false)}
-          variant="outline"
-          className="mt-4 bg-white"
-        >
-          Send another message
-        </Button>
-      </div>
-    );
-  }
+  };
 
   return (
-    <form
-      onSubmit={form.handleSubmit(onSubmit)}
-      className="space-y-6 bg-slate-700 p-8 rounded-3xl shadow-xl"
-    >
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="space-y-2">
-          <label className="text-sm font-semibold text-white">
-            Name
-          </label>
+    <div className="bg-white rounded-2xl shadow-xl p-6 md:p-8 text-gray-900 space-y-6">
 
-          <input
-            {...form.register("name")}
-            className="flex h-12 w-full rounded-xl bg-slate-800 px-4 py-2 text-sm text-white border-0 focus:ring-2 focus:ring-blue-500"
-            placeholder="Your Name"
-          />
+      {/* RESULT */}
+      {result && (
+        <div className="p-5 rounded-xl border bg-green-50 border-green-200">
+          <h2 className="text-xl font-bold text-green-800">
+            Assessment Completed 🎉
+          </h2>
 
-          {form.formState.errors.name && (
-            <p className="text-sm text-red-500">
-              {form.formState.errors.name.message}
-            </p>
-          )}
+          <p className="mt-2"><b>Name:</b> {result.full_name}</p>
+          <p><b>Total Score:</b> {result.total_score}</p>
+          <p><b>Status:</b> {result.status}</p>
+          <p className="mt-2"><b>Recommendation:</b> {result.recommendation}</p>
+
+          <Button className="mt-4" onClick={() => setResult(null)}>
+            Take Again
+          </Button>
         </div>
-
-        <div className="space-y-2">
-          <label className="text-sm font-semibold text-white">
-            Email
-          </label>
-
-          <input
-            type="email"
-            {...form.register("email")}
-            className="flex h-12 w-full rounded-xl bg-slate-800 px-4 py-2 text-sm text-white border-0 focus:ring-2 focus:ring-blue-500"
-            placeholder="email@example.com"
-          />
-
-          {form.formState.errors.email && (
-            <p className="text-sm text-red-500">
-              {form.formState.errors.email.message}
-            </p>
-          )}
-        </div>
-      </div>
-
-      <div className="space-y-2">
-        <label className="text-sm font-semibold text-white">
-          Subject
-        </label>
-
-        <input
-          {...form.register("subject")}
-          className="flex h-12 w-full rounded-xl bg-slate-800 px-4 py-2 text-sm text-white border-0 focus:ring-2 focus:ring-blue-500"
-          placeholder="Inquiry about..."
-        />
-
-        {form.formState.errors.subject && (
-          <p className="text-sm text-red-500">
-            {form.formState.errors.subject.message}
-          </p>
-        )}
-      </div>
-
-      <div className="space-y-2">
-        <label className="text-sm font-semibold text-white">
-          Message
-        </label>
-
-        <textarea
-          {...form.register("message")}
-          className="flex min-h-[140px] w-full rounded-xl bg-slate-800 px-4 py-3 text-sm text-white border-0 resize-y focus:ring-2 focus:ring-blue-500"
-          placeholder="How can we help?"
-        />
-
-        {form.formState.errors.message && (
-          <p className="text-sm text-red-500">
-            {form.formState.errors.message.message}
-          </p>
-        )}
-      </div>
-
-      {errorMsg && (
-        <p className="text-sm text-red-400 font-medium">
-          {errorMsg}
-        </p>
       )}
 
-      <Button
-        type="submit"
-        className="w-full h-12 rounded-xl font-bold text-lg bg-blue-800 hover:bg-blue-700 text-white"
-        disabled={isSubmitting}
-      >
-        {isSubmitting ? "Sending..." : "Send Message"}
-      </Button>
-    </form>
+      {/* TITLE + INSTRUCTIONS */}
+      {!result && (
+        <>
+          <div>
+            <h1 className="text-2xl font-bold">
+              OFAS ASTHMA CONTROL SCORECARD (AC–OFAS)
+            </h1>
+
+            <p className="italic mt-1">
+              "Winning Everyday Despite Asthma"
+            </p>
+          </div>
+
+          <div className="text-sm bg-blue-50 p-4 rounded-xl border space-y-2">
+            <p className="font-semibold">📊 How to Use This Scorecard</p>
+            <p>· Answer each question based on the last 4 weeks (one month)</p>
+            <p>· Circle or tick the number that matches your experience</p>
+            <p>· Add up your score at the end</p>
+            <p>· Share your score with your OFAS volunteer or team lead</p>
+          </div>
+
+          {/* BASIC INFO */}
+          <div className="grid gap-3">
+            <input
+              name="full_name"
+              placeholder="Full Name"
+              className="border p-3 rounded-lg"
+              value={form.full_name}
+              onChange={handleChange}
+            />
+
+            <input
+              name="volunteer_id"
+              placeholder="OFAS Volunteer ID (if any)"
+              className="border p-3 rounded-lg"
+              value={form.volunteer_id}
+              onChange={handleChange}
+            />
+
+            <input
+              name="state_lga"
+              placeholder="State / LGA"
+              className="border p-3 rounded-lg"
+              value={form.state_lga}
+              onChange={handleChange}
+            />
+
+            <input
+              name="phone_number"
+              placeholder="Phone Number"
+              className="border p-3 rounded-lg"
+              value={form.phone_number}
+              onChange={handleChange}
+            />
+
+            <input
+              type="date"
+              name="date_of_birth"
+              className="border p-3 rounded-lg"
+              value={form.date_of_birth}
+              onChange={handleChange}
+            />
+          </div>
+
+          {/* QUESTIONS (UNCHANGED TEXT EXACTLY) */}
+          <div className="space-y-6 text-sm">
+
+            <div>
+              <p className="font-bold">
+                1. In the past 4 weeks, how often did your asthma stop you from doing your normal activities (work, school, farming, market, chores)?
+              </p>
+              <select name="q1_answer" className="border p-3 w-full rounded-lg mt-2" onChange={handleChange}>
+                <option value="">Select</option>
+                <option value="1">All of the time 1</option>
+                <option value="2">Most of the time 2</option>
+                <option value="3">Some of the time 3</option>
+                <option value="4">A little of the time 4</option>
+                <option value="5">None of the time 5</option>
+              </select>
+            </div>
+
+            <div>
+              <p className="font-bold">
+                2. In the past 4 weeks, how often did you have shortness of breath?
+              </p>
+              <select name="q2_answer" className="border p-3 w-full rounded-lg mt-2" onChange={handleChange}>
+                <option value="">Select</option>
+                <option value="1">More than once a day 1</option>
+                <option value="2">Once a day 2</option>
+                <option value="3">3 to 6 times a week 3</option>
+                <option value="4">Once or twice a week 4</option>
+                <option value="5">Not at all 5</option>
+              </select>
+            </div>
+
+            <div>
+              <p className="font-bold">
+                3. In the past 4 weeks, how often did asthma symptoms (cough, wheeze, chest tightness) wake you up at night or early in the morning?
+              </p>
+              <select name="q3_answer" className="border p-3 w-full rounded-lg mt-2" onChange={handleChange}>
+                <option value="">Select</option>
+                <option value="1">4 or more nights a week 1</option>
+                <option value="2">2 to 3 nights a week 2</option>
+                <option value="3">Once a week 3</option>
+                <option value="4">Once or twice 4</option>
+                <option value="5">Not at all 5</option>
+              </select>
+            </div>
+
+            <div>
+              <p className="font-bold">
+                4. In the past 4 weeks, how often did you use your rescue (blue) inhaler or nebules?
+              </p>
+              <select name="q4_answer" className="border p-3 w-full rounded-lg mt-2" onChange={handleChange}>
+                <option value="">Select</option>
+                <option value="1">3 or more times a day 1</option>
+                <option value="2">1 to 2 times a day 2</option>
+                <option value="3">2 to 3 times a week 3</option>
+                <option value="4">Once a week or less 4</option>
+                <option value="5">Not at all 5</option>
+              </select>
+            </div>
+
+            <div>
+              <p className="font-bold">
+                5. In the past 4 weeks, how would you rate your asthma control?
+              </p>
+              <select name="q5_answer" className="border p-3 w-full rounded-lg mt-2" onChange={handleChange}>
+                <option value="">Select</option>
+                <option value="1">Not controlled at all 1</option>
+                <option value="2">Poorly controlled 2</option>
+                <option value="3">Somewhat controlled 3</option>
+                <option value="4">Well controlled 4</option>
+                <option value="5">Completely controlled 5</option>
+              </select>
+            </div>
+
+          </div>
+
+          {error && (
+            <p className="text-red-500 font-medium">{error}</p>
+          )}
+
+          <Button
+            className="w-full"
+            onClick={handleSubmit}
+            disabled={loading}
+          >
+            {loading ? "Submitting..." : "Submit Assessment"}
+          </Button>
+        </>
+      )}
+    </div>
   );
 }

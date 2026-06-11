@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import type { ReactNode } from "react";
+import { useState, ReactNode } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import {
@@ -19,7 +18,7 @@ import {
 } from "lucide-react";
 
 type Props = {
-  children?: ReactNode;
+  children: ReactNode;
 };
 
 export default function AdminOfasHome({ children }: Props) {
@@ -35,7 +34,6 @@ export default function AdminOfasHome({ children }: Props) {
   const isActive = (path: string) =>
     pathname === path || pathname.startsWith(path + "/");
 
-  // ✅ FIXED LOGOUT (consistent token + correct Bearer auth)
   const handleLogout = async () => {
     const token = localStorage.getItem("access");
 
@@ -49,10 +47,9 @@ export default function AdminOfasHome({ children }: Props) {
           },
         });
       }
-    } catch (error) {
-      console.log("Logout error:", error);
+    } catch (err) {
+      console.log("Logout error:", err);
     } finally {
-      // ✅ clear ALL auth-related data
       localStorage.removeItem("access");
       localStorage.removeItem("refresh");
       localStorage.removeItem("adminUser");
@@ -65,7 +62,7 @@ export default function AdminOfasHome({ children }: Props) {
     <div className="flex min-h-screen bg-gray-50">
 
       {/* MOBILE TOP BAR */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 h-14 bg-white border-b border-gray-200 z-40 flex items-center justify-between px-4">
+      <div className="lg:hidden fixed top-0 left-0 right-0 h-14 bg-white border-b z-40 flex items-center justify-between px-4">
         <h2 className="font-bold text-blue-600">OFAS Admin</h2>
 
         <button onClick={() => setOpen(true)}>
@@ -76,11 +73,10 @@ export default function AdminOfasHome({ children }: Props) {
       {/* SIDEBAR */}
       <aside
         className={`
-          fixed lg:fixed top-0 left-0
-          h-full w-72
+          fixed top-0 left-0 h-full w-72 z-50
           bg-gradient-to-b from-blue-600 to-sky-500
-          text-white flex flex-col z-50
-          transform transition-transform duration-300
+          text-white flex flex-col
+          transition-transform duration-300
           ${open ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
         `}
       >
@@ -102,7 +98,7 @@ export default function AdminOfasHome({ children }: Props) {
           </div>
         </div>
 
-        {/* NAVIGATION */}
+        {/* NAV */}
         <nav className="flex-1 flex flex-col gap-2 p-4 overflow-y-auto">
 
           <Link
@@ -193,7 +189,7 @@ export default function AdminOfasHome({ children }: Props) {
             }`}
           >
             <Settings size={18} />
-            Sent Message
+            Contact Messages
           </Link>
 
           <Link
@@ -227,8 +223,8 @@ export default function AdminOfasHome({ children }: Props) {
       )}
 
       {/* MAIN CONTENT */}
-      <main className="flex-1 lg:ml-72 pt-14 lg:pt-0 overflow-y-auto">
-        <div className="p-6 lg:p-10 min-h-screen bg-gray-50">
+      <main className="flex-1 lg:ml-72 pt-14 lg:pt-0">
+        <div className="p-6 lg:p-10 min-h-screen">
           {children}
         </div>
       </main>

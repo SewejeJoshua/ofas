@@ -2,6 +2,7 @@
 
 import { ReactNode } from "react";
 import { usePathname } from "next/navigation";
+import AdminOfasHome from "@/components/admin/AdminOfasHome";
 
 type Props = {
   children: ReactNode;
@@ -10,20 +11,17 @@ type Props = {
 export default function AdminLayout({ children }: Props) {
   const pathname = usePathname();
 
-  // Hide sidebar on login page
   const isLoginPage = pathname === "/admin-login";
 
-  return (
-    <div className="min-h-screen flex">
-      {/* SIDEBAR (ONLY SHOW IF NOT LOGIN PAGE) */}
-      {!isLoginPage && (
-        <aside className="w-72 bg-blue-600 text-white">
-          Admin Sidebar
-        </aside>
-      )}
+  // If login page → no sidebar
+  if (isLoginPage) {
+    return <>{children}</>;
+  }
 
-      {/* MAIN CONTENT */}
-      <main className="flex-1 p-6">{children}</main>
-    </div>
+  // All admin pages → use full dashboard layout
+  return (
+    <AdminOfasHome>
+      {children}
+    </AdminOfasHome>
   );
 }
