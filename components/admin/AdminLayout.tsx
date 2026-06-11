@@ -13,15 +13,13 @@ export default function AdminLayout({ children }: Props) {
 
   const isLoginPage = pathname === "/admin-login";
 
-  // If login page → no sidebar
-  if (isLoginPage) {
-    return <>{children}</>;
-  }
-
-  // All admin pages → use full dashboard layout
   return (
-    <AdminOfasHome>
-      {children}
-    </AdminOfasHome>
+    <div className="min-h-screen flex bg-gray-50">
+      {/* SIDEBAR WRAPPER */}
+      {!isLoginPage && <AdminOfasHome />}
+
+      {/* MAIN CONTENT */}
+      <main className="flex-1">{children}</main>
+    </div>
   );
 }

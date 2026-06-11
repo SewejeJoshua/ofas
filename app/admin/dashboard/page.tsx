@@ -1,5 +1,9 @@
-import AdminOfasHome from "@/components/admin/AdminOfasHome";
+import AdminLayout from "@/components/admin/AdminLayout";
 
 export default function Page() {
-  return <AdminOfasHome />;
+  return (
+    <AdminLayout>
+      <div>Dashboard Content Here</div>
+    </AdminLayout>
+  );
 }
