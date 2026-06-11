@@ -7,7 +7,7 @@ import { AboutPage } from "@/app/about/page";
 import { ProgramsPage } from "@/app/programs/page";
 import { ResourcesPage } from "@/app/resources/page";
 import { CampusBasesPage } from "@/app/campus-bases/page";
-import { ContactPage } from "@/app/contact/page";
+import ContactPage from "@/app/contact/page";
 
 
  
