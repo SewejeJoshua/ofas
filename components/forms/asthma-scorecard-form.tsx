@@ -47,6 +47,7 @@ export function Header() {
     };
 
     window.addEventListener("keydown", handleEsc);
+
     return () => {
       document.body.style.overflow = "auto";
       window.removeEventListener("keydown", handleEsc);
@@ -55,7 +56,6 @@ export function Header() {
 
   return (
     <>
-      {/* ================= HEADER ================= */}
       <header className="sticky top-0 z-40 backdrop-blur-2xl bg-white/60 dark:bg-gray-900/60 border-b border-white/20 dark:border-gray-800/50">
         <Container>
           <div className="flex items-center h-20">
@@ -70,12 +70,10 @@ export function Header() {
                   className="object-cover"
                 />
               </div>
-              <span className="hidden md:block text-2xl font-bold">
-                OFAS
-              </span>
+              <span className="hidden md:block text-2xl font-bold">OFAS</span>
             </Link>
 
-            {/* NAVIGATION */}
+            {/* NAV */}
             <div className="ml-auto flex items-center gap-6">
 
               <nav className="hidden xl:flex gap-6">
@@ -100,7 +98,6 @@ export function Header() {
                 )}
               </nav>
 
-              {/* DONATE BUTTON */}
               <Button
                 onClick={() => setActiveModal("donate")}
                 className="hidden md:block rounded-full bg-sky-500 text-white"
@@ -108,7 +105,6 @@ export function Header() {
                 Donate
               </Button>
 
-              {/* MOBILE MENU TOGGLE */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="xl:hidden"
@@ -119,7 +115,7 @@ export function Header() {
           </div>
         </Container>
 
-        {/* ================= MOBILE MENU ================= */}
+        {/* MOBILE */}
         <AnimatePresence>
           {mobileMenuOpen && (
             <motion.div
@@ -163,7 +159,7 @@ export function Header() {
         </AnimatePresence>
       </header>
 
-      {/* ================= MODALS ================= */}
+      {/* MODALS */}
       <AnimatePresence>
         {activeModal && (
           <motion.div
@@ -184,9 +180,7 @@ export function Header() {
                 <DonatePage onClose={closeModal} />
               )}
 
-              {activeModal === "test" && (
-                <AsthmaScorecardForm />
-              )}
+              {activeModal === "test" && <AsthmaScorecardForm />}
             </motion.div>
           </motion.div>
         )}
