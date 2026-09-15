@@ -1,10 +1,10 @@
- 
+
 "use client";
 
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Container } from "@/components/ui/container";
-import { Mail, Facebook, Instagram } from "lucide-react";
+import { Facebook, Instagram } from "lucide-react";
 
 const teamMembers = [
   {
@@ -12,7 +12,6 @@ const teamMembers = [
     role: "Founder & Executive Director",
     image: "/team/daniel-amogu.jpeg",
     bio: "Pharmacist and Environmental Technologist dedicated to advancing asthma awareness, clean air advocacy, access to life-saving medication, and better asthma care across Nigeria.",
-    email: "theofascommunity@gmail.com",
     facebook: "https://www.facebook.com/amogu2?mibextid=rS40aB7S9Ucbxw6v",
     instagram:
       "https://www.instagram.com/daniel.amogu?stkn=MW5vOG16NHhoYmh6cA==",
@@ -22,7 +21,6 @@ const teamMembers = [
     role: "Human Resources Manager",
     image: "/team/david-alex.jpeg",
     bio: "Oversees volunteer recruitment, onboarding, team coordination, leave management, and professional development to strengthen the OFAS volunteer workforce.",
-    email: "theofascommunity@gmail.com",
     facebook:
       "https://www.facebook.com/abas.alexander.2025?mibextid=rS40aB7S9Ucbxw6v",
     instagram:
@@ -33,8 +31,8 @@ const teamMembers = [
     role: "Communications & Member Support Team Lead",
     image: "/team/felix-efe.jpeg",
     bio: "Leads communications and member support, fostering connection, engagement, and a welcoming community where every OFAS member feels supported and valued.",
-    email: "theofascommunity@gmail.com",
-    facebook: "https://www.facebook.com/wealthfelix?mibextid=rS40aB7S9Ucbxw6v",
+    facebook:
+      "https://www.facebook.com/wealthfelix?mibextid=rS40aB7S9Ucbxw6v",
     instagram:
       "https://www.instagram.com/iamwealth_12?stkn=enE0azNlamdwbnU2",
   },
@@ -43,7 +41,6 @@ const teamMembers = [
     role: "Community Engagement Lead",
     image: "/team/emma-okon.jpeg",
     bio: "Coordinates community activities and volunteer responsibilities, ensuring effective participation, accountability, and the successful delivery of assigned tasks.",
-    email: "theofascommunity@gmail.com",
     facebook:
       "https://www.facebook.com/kelly.okon.54?mibextid=rS40aB7S9Ucbxw6v",
     instagram:
@@ -54,7 +51,6 @@ const teamMembers = [
     role: "Outreach Team Lead",
     image: "/team/frank.jpeg",
     bio: "Leads outreach activities, builds strategic partnerships, and coordinates initiatives that promote asthma awareness, health education, and meaningful community impact.",
-    email: "theofascommunity@gmail.com",
     facebook:
       "https://www.facebook.com/profile.php?id=61583552693956&mibextid=rS40aB7S9Ucbxw6v",
     instagram:
@@ -65,7 +61,6 @@ const teamMembers = [
     role: "Volunteer Team Head",
     image: "/team/love-ade.jpeg",
     bio: "Coordinates volunteers, programs, and community activities that strengthen asthma awareness, education, support, and the overall impact of OFAS initiatives.",
-    email: "theofascommunity@gmail.com",
     facebook: "#",
     instagram:
       "https://www.instagram.com/symply_jameel?stkn=emhpaHE5cTBkbjUw",
@@ -77,7 +72,9 @@ export default function TeamPage() {
     <main className="min-h-screen bg-white dark:bg-gray-950">
       <section className="py-12 sm:py-14 lg:py-16">
         <Container>
-          {/* INTRO */}
+          {/* =========================
+              INTRO
+          ========================= */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -95,7 +92,9 @@ export default function TeamPage() {
             </p>
           </motion.div>
 
-          {/* TEAM GRID */}
+          {/* =========================
+              TEAM GRID
+          ========================= */}
           <div className="mx-auto grid max-w-5xl grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {teamMembers.map((member, index) => (
               <motion.article
@@ -111,7 +110,9 @@ export default function TeamPage() {
                 whileHover={{ y: -3 }}
                 className="group overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:border-sky-200 hover:shadow-md dark:border-gray-800 dark:bg-gray-900 dark:hover:border-sky-800"
               >
-                {/* IMAGE */}
+                {/* =========================
+                    IMAGE
+                ========================= */}
                 <div className="relative aspect-[4/3] overflow-hidden bg-gray-100 dark:bg-gray-800">
                   <Image
                     src={member.image}
@@ -121,41 +122,130 @@ export default function TeamPage() {
                     className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
                   />
 
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                  {/* IMAGE OVERLAY
+                      Desktop: appears on hover
+                      Mobile: always slightly visible
+                  */}
+                  <div
+                    className="
+                      absolute inset-0
+                      bg-gradient-to-t from-black/50 via-black/10 to-transparent
+                      opacity-100
+                      transition-opacity duration-300
+                      sm:opacity-0
+                      sm:group-hover:opacity-100
+                    "
+                  />
 
-                  {/* SOCIAL ICONS */}
-                  <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 translate-y-2 items-center gap-2 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-                    <a
-                      href={member.facebook}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={`${member.name} on Facebook`}
-                      className="flex h-8 w-8 items-center justify-center rounded-full border border-white/30 bg-white/90 text-gray-700 shadow-md backdrop-blur-sm transition-all duration-200 hover:scale-105 hover:bg-white hover:text-sky-600"
-                    >
-                      <Facebook className="h-4 w-4" />
-                    </a>
+                  {/* =========================
+                      SOCIAL ICONS
+                  =========================
+                      Mobile:
+                      Always visible.
 
-                    {/* <a
-                      href={`mailto:${member.email}`}
-                      aria-label={`Email ${member.name}`}
-                      className="flex h-8 w-8 items-center justify-center rounded-full border border-white/30 bg-white/90 text-gray-700 shadow-md backdrop-blur-sm transition-all duration-200 hover:scale-105 hover:bg-white hover:text-sky-600"
-                    >
-                      <Mail className="h-4 w-4" />
-                    </a> */}
+                      Desktop:
+                      Hidden until image/card hover.
+                  */}
+                  <div
+                    className="
+                      absolute bottom-3 left-1/2
+                      flex -translate-x-1/2 items-center gap-2
+                      translate-y-0 opacity-100
+                      transition-all duration-300
 
-                    <a
-                      href={member.instagram}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={`${member.name} on Instagram`}
-                      className="flex h-8 w-8 items-center justify-center rounded-full border border-white/30 bg-white/90 text-gray-700 shadow-md backdrop-blur-sm transition-all duration-200 hover:scale-105 hover:bg-white hover:text-sky-600"
-                    >
-                      <Instagram className="h-4 w-4" />
-                    </a>
+                      sm:translate-y-2
+                      sm:opacity-0
+                      sm:group-hover:translate-y-0
+                      sm:group-hover:opacity-100
+                    "
+                  >
+                    {/* FACEBOOK */}
+                    {member.facebook !== "#" ? (
+                      <a
+                        href={member.facebook}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`${member.name} on Facebook`}
+                        className="
+                          flex h-9 w-9 items-center justify-center
+                          rounded-full
+                          border border-white/40
+                          bg-white/90
+                          text-gray-700
+                          shadow-lg
+                          backdrop-blur-sm
+                          transition-all duration-200
+                          hover:scale-110
+                          hover:bg-white
+                          hover:text-blue-600
+                          active:scale-95
+                        "
+                      >
+                        <Facebook className="h-4 w-4" />
+                      </a>
+                    ) : (
+                      <span
+                        aria-hidden="true"
+                        className="
+                          flex h-9 w-9 items-center justify-center
+                          rounded-full
+                          border border-white/30
+                          bg-white/60
+                          text-gray-400
+                          shadow-md
+                          backdrop-blur-sm
+                        "
+                      >
+                        <Facebook className="h-4 w-4" />
+                      </span>
+                    )}
+
+                    {/* INSTAGRAM */}
+                    {member.instagram !== "#" ? (
+                      <a
+                        href={member.instagram}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`${member.name} on Instagram`}
+                        className="
+                          flex h-9 w-9 items-center justify-center
+                          rounded-full
+                          border border-white/40
+                          bg-white/90
+                          text-gray-700
+                          shadow-lg
+                          backdrop-blur-sm
+                          transition-all duration-200
+                          hover:scale-110
+                          hover:bg-white
+                          hover:text-pink-600
+                          active:scale-95
+                        "
+                      >
+                        <Instagram className="h-4 w-4" />
+                      </a>
+                    ) : (
+                      <span
+                        aria-hidden="true"
+                        className="
+                          flex h-9 w-9 items-center justify-center
+                          rounded-full
+                          border border-white/30
+                          bg-white/60
+                          text-gray-400
+                          shadow-md
+                          backdrop-blur-sm
+                        "
+                      >
+                        <Instagram className="h-4 w-4" />
+                      </span>
+                    )}
                   </div>
                 </div>
 
-                {/* CONTENT */}
+                {/* =========================
+                    CONTENT
+                ========================= */}
                 <div className="p-4">
                   <h2 className="text-base font-semibold tracking-tight text-gray-900 dark:text-white">
                     {member.name}
