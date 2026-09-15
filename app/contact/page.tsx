@@ -5,6 +5,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, FormEvent } from "react";
 import { Send, CheckCircle2, AlertCircle } from "lucide-react";
 
+const API_URL =
+  process.env.NEXT_PUBLIC_OFAS_API_URL ||
+  "https://backend-ofascommunity.onrender.com";
+
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -15,23 +19,23 @@ export default function ContactPage() {
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     setLoading(true);
     setError("");
 
     try {
-      const response = await fetch("/api/contact-us/", {
+      const response = await fetch(`${API_URL}/api/contact-us/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name,
-          email,
-          subject,
-          message,
+          name: name.trim(),
+          email: email.trim(),
+          subject: subject.trim(),
+          message: message.trim(),
         }),
       });
 
@@ -41,7 +45,8 @@ export default function ContactPage() {
         throw new Error(
           data?.message ||
             data?.detail ||
-            "Failed to send message. Please try again."
+            data?.error ||
+            `Failed to send message. Server returned ${response.status}.`
         );
       }
 
@@ -77,6 +82,7 @@ export default function ContactPage() {
 
       {/* Glow Effects */}
       <div className="pointer-events-none absolute -top-32 -left-32 w-[400px] h-[400px] bg-blue-300/30 blur-[120px] rounded-full" />
+
       <div className="pointer-events-none absolute bottom-0 right-0 w-[350px] h-[350px] bg-sky-300/30 blur-[120px] rounded-full" />
 
       <Container>
@@ -132,7 +138,11 @@ export default function ContactPage() {
                 "Partnership opportunities",
               ].map((item) => (
                 <div key={item} className="flex items-center gap-3">
-                  <CheckCircle2 size={16} className="text-blue-500" />
+                  <CheckCircle2
+                    size={16}
+                    className="text-blue-500"
+                  />
+
                   <span className="text-sm text-gray-600 dark:text-gray-300">
                     {item}
                   </span>
@@ -158,7 +168,10 @@ export default function ContactPage() {
                   className="rounded-3xl bg-white/80 dark:bg-white/5 backdrop-blur-xl border border-white/40 dark:border-white/10 p-10 text-center shadow-xl"
                 >
                   <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-6">
-                    <CheckCircle2 size={28} className="text-blue-600" />
+                    <CheckCircle2
+                      size={28}
+                      className="text-blue-600"
+                    />
                   </div>
 
                   <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
@@ -166,9 +179,17 @@ export default function ContactPage() {
                   </h3>
 
                   <p className="text-gray-600 dark:text-gray-300 mt-2">
-                    Thank you for contacting us. We will get back to you within
-                    24–48 hours.
+                    Thank you for contacting us. We will get back to you
+                    within 24–48 hours.
                   </p>
+
+                  <button
+                    type="button"
+                    onClick={() => setSubmitted(false)}
+                    className="mt-6 px-5 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-semibold hover:bg-blue-500 transition"
+                  >
+                    Send Another Message
+                  </button>
                 </motion.div>
               ) : (
                 <motion.form
@@ -184,6 +205,7 @@ export default function ContactPage() {
                       className={inputClasses}
                       value={name}
                       onChange={(e) => setName(e.target.value)}
+                      disabled={loading}
                     />
 
                     <input
@@ -193,6 +215,7 @@ export default function ContactPage() {
                       className={inputClasses}
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
+                      disabled={loading}
                     />
                   </div>
 
@@ -203,6 +226,7 @@ export default function ContactPage() {
                     className={inputClasses}
                     value={subject}
                     onChange={(e) => setSubject(e.target.value)}
+                    disabled={loading}
                   />
 
                   <textarea
@@ -212,11 +236,16 @@ export default function ContactPage() {
                     className={`${inputClasses} resize-none`}
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
+                    disabled={loading}
                   />
 
                   {error && (
-                    <div className="flex items-center gap-2 text-red-500 text-sm">
-                      <AlertCircle size={16} />
+                    <div className="flex items-start gap-2 rounded-xl bg-red-50 border border-red-100 px-4 py-3 text-red-600 text-sm">
+                      <AlertCircle
+                        size={17}
+                        className="mt-0.5 shrink-0"
+                      />
+
                       <span>{error}</span>
                     </div>
                   )}
@@ -227,7 +256,10 @@ export default function ContactPage() {
                     className="w-full h-12 rounded-xl bg-blue-600 text-white font-semibold flex items-center justify-center gap-2 hover:bg-blue-500 disabled:opacity-60 disabled:cursor-not-allowed transition"
                   >
                     {loading ? (
-                      "Sending..."
+                      <>
+                        <span className="h-4 w-4 rounded-full border-2 border-white/40 border-t-white animate-spin" />
+                        Sending...
+                      </>
                     ) : (
                       <>
                         Send Message

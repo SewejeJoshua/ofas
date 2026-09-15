@@ -79,6 +79,11 @@ export default function AdminOfasHome({
       icon: CheckCircle,
     },
     {
+      label: "Campus Chapters",
+      href: "/admin/dashboard/chapters",
+      icon: CheckCircle,
+    },
+    {
       label: "Tests",
       href: "/admin/dashboard/test",
       icon: FlaskConical,
