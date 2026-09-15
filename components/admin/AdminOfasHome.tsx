@@ -180,7 +180,7 @@ export default function AdminOfasHome({
   >
     <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl bg-sky-600 shadow-sm shadow-sky-200">
       <img
-        src="/favicon.ico"
+        src="/logo.jpg"
         alt="OFAS logo"
         className="h-full w-full object-contain"
       />
