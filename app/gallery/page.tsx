@@ -13,7 +13,7 @@ export default function GalleryPage() {
     "/gallery/ofas-gal-4.jpg",
     "/gallery/ofas-gal-5.jpg",
     "/gallery/ofas-gal-6.jpg", 
-    "/gallery/ofas-gal-6.jpg", 
+    "/gallery/ofas-gal-9.jpg", 
   ];
 
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
