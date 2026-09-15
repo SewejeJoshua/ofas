@@ -8,13 +8,11 @@ import { X } from "lucide-react";
 
 export default function GalleryPage() {
   const images = [
-    
-    "/gallery/ofas-gal-9.jpg", 
     "/gallery/ofas-gal-1.jpg",
     "/gallery/ofas-gal-2.jpg",
+    "/gallery/ofas-gal-3.jpg",
     "/gallery/ofas-gal-4.jpg",
-    "/gallery/ofas-gal-5.jpg",
-    "/gallery/ofas-gal-6.jpg", 
+    "/gallery/ofas-gal-5.jpg", 
   ];
 
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
