@@ -141,7 +141,7 @@ export function VolunteerForm({ onClose }: Props) {
         <div className="space-y-1 pr-8">
           <h2 className="text-2xl font-semibold">Volunteer Application</h2>
           <p className="text-sm text-gray-400">
-            Fill In Your Details To Becoe Our Volunteer.
+            Fill In Your Details To Become Our Volunteer.
           </p>
         </div>
 
