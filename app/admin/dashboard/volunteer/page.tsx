@@ -203,7 +203,7 @@ export default function VolunteersAdmin() {
         </div>
 
         {/* =========================
-            STATISTICS
+            STATISTICS  
         ========================= */}
         <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
@@ -389,7 +389,7 @@ export default function VolunteersAdmin() {
               <button
                 type="button"
                 onClick={() => setSelected(null)}
-                className="absolute right-5 top-5 flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-slate-500 transition-colors hover:bg-slate-200 hover:text-slate-900"
+                className="absolute text-black right-5 top-5 flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-slate-500 transition-colors hover:bg-slate-200 hover:text-slate-900"
                 aria-label="Close"
               >
                 <X className="h-4 w-4" />
@@ -492,7 +492,7 @@ export default function VolunteersAdmin() {
                 <Button
                   variant="outline"
                   onClick={() => setSelected(null)}
-                  className="rounded-full border-slate-200 px-6"
+                  className="rounded-full text-black border-slate-200 px-6"
                 >
                   Close
                 </Button>
