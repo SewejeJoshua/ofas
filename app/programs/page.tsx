@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { X, CheckCircle2, Info } from "lucide-react";
+import { VolunteerForm } from "@/components/forms/volunteer-form";
 
 const programs = [
   {
@@ -70,17 +71,33 @@ export function ProgramsPage() {
     (typeof programs)[number] | null
   >(null);
 
+  const [volunteerOpen, setVolunteerOpen] = useState(false);
+
+  const closeVolunteer = () => {
+    setVolunteerOpen(false);
+  };
+
   useEffect(() => {
-    if (selectedProgram) {
+    if (selectedProgram || volunteerOpen) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
     }
 
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setSelectedProgram(null);
+        setVolunteerOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleEsc);
+
     return () => {
       document.body.style.overflow = "auto";
+      window.removeEventListener("keydown", handleEsc);
     };
-  }, [selectedProgram]);
+  }, [selectedProgram, volunteerOpen]);
 
   return (
     <section
@@ -95,9 +112,9 @@ export function ProgramsPage() {
       {/* =========================
           GLOW ORBS
       ========================= */}
-      <div className="pointer-events-none absolute -top-32 -left-32 w-[400px] h-[400px] bg-blue-300/30 blur-[120px] rounded-full" />
+      <div className="pointer-events-none absolute -top-32 -left-32 w-[400px] h-[400px] bg-blue-300/30 blur-[120px] rounded-full dark:bg-blue-500/10" />
 
-      <div className="pointer-events-none absolute bottom-0 right-0 w-[350px] h-[350px] bg-sky-300/30 blur-[120px] rounded-full" />
+      <div className="pointer-events-none absolute bottom-0 right-0 w-[350px] h-[350px] bg-sky-300/30 blur-[120px] rounded-full dark:bg-sky-500/10" />
 
       <Container>
         {/* =========================
@@ -154,6 +171,46 @@ export function ProgramsPage() {
             </motion.div>
           ))}
         </div>
+
+        {/* =========================
+            VOLUNTEER CTA
+        ========================= */}
+        <motion.div
+  initial={{ opacity: 0, y: 40 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.7 }}
+  viewport={{ once: true }}
+  className="
+    mt-5
+    p-8
+    sm:p-10
+    text-center
+  "
+>
+  <div className="mt-7">
+    <Button
+      type="button"
+      onClick={() => setVolunteerOpen(true)}
+      className="
+        rounded-full
+        bg-blue-600
+        px-8
+        text-base
+        font-semibold
+        text-white
+        shadow-sm
+        transition-all
+        duration-300
+        hover:bg-blue-700
+        hover:-translate-y-0.5
+        hover:shadow-lg
+        hover:shadow-blue-500/20
+      "
+    >
+      Be A Volunteer
+    </Button>
+  </div>
+</motion.div>
       </Container>
 
       {/* =========================
@@ -262,6 +319,63 @@ export function ProgramsPage() {
                   </Button>
                 </div>
               </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* =========================
+          VOLUNTEER MODAL
+      ========================= */}
+      <AnimatePresence>
+        {volunteerOpen && (
+          <motion.div
+            onClick={closeVolunteer}
+            className="
+              fixed
+              inset-0
+              z-[60]
+              flex
+              items-center
+              justify-center
+              bg-black/60
+              backdrop-blur-sm
+              p-4
+            "
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div
+              onClick={(e) => e.stopPropagation()}
+              initial={{
+                scale: 0.9,
+                opacity: 0,
+                y: 20,
+              }}
+              animate={{
+                scale: 1,
+                opacity: 1,
+                y: 0,
+              }}
+              exit={{
+                scale: 0.9,
+                opacity: 0,
+                y: 20,
+              }}
+              transition={{
+                duration: 0.25,
+                ease: "easeOut",
+              }}
+              className="
+                relative
+                w-full
+                max-w-4xl
+                max-h-[90vh]
+                overflow-y-auto
+              "
+            >
+              <VolunteerForm onClose={closeVolunteer} />
             </motion.div>
           </motion.div>
         )}

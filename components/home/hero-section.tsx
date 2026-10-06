@@ -133,26 +133,18 @@ export function HeroSection() {
               transition={{ delay: 0.4, duration: 0.8 }}
               className="mt-6 text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-xl mx-auto lg:mx-0 leading-relaxed"
             >
-              Supporting asthma awareness, education, and care for every family.
+             Welcome to The One Family Asthma Support Community.
+             Supporting asthma awareness, education, and care for every family.
+
+
             </motion.p>
 
             <div className="mt-10 flex flex-col items-center lg:items-start gap-6">
 
               <div className="flex flex-col sm:flex-row gap-4 w-full">
-                <Button
-                  onClick={openDonate}
-                  className="w-full sm:w-auto px-8 py-6 text-lg rounded-full bg-blue-500 text-white hover:scale-105 transition"
-                >
-                  Donate Now
-                </Button>
+               
 
-                <Button
-                  onClick={openVolunteer}
-                  variant="outline"
-                  className="w-full sm:w-auto px-8 py-6 text-lg rounded-full hover:scale-105 transition"
-                >
-                  Be A Volunteer
-                </Button>
+               
               </div>
 
               {/* STATS */}

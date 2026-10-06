@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useForm } from "react-hook-form";
@@ -73,11 +72,9 @@ const formSchema = z.object({
 
   message: z.string().optional(),
 
-  agree: z
-    .boolean()
-    .refine((value) => value === true, {
-      message: "You must agree to continue.",
-    }),
+  agree: z.boolean().refine((value) => value === true, {
+    message: "You must agree to continue.",
+  }),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -178,25 +175,15 @@ export function VolunteerForm({ onClose }: Props) {
           } else {
             const errors: string[] = [];
 
-            Object.entries(data).forEach(
-              ([field, value]) => {
-                if (Array.isArray(value)) {
-                  errors.push(
-                    `${field}: ${value.join(", ")}`
-                  );
-                } else if (
-                  typeof value === "string"
-                ) {
-                  errors.push(
-                    `${field}: ${value}`
-                  );
-                } else if (value) {
-                  errors.push(
-                    `${field}: ${JSON.stringify(value)}`
-                  );
-                }
+            Object.entries(data).forEach(([field, value]) => {
+              if (Array.isArray(value)) {
+                errors.push(`${field}: ${value.join(", ")}`);
+              } else if (typeof value === "string") {
+                errors.push(`${field}: ${value}`);
+              } else if (value) {
+                errors.push(`${field}: ${JSON.stringify(value)}`);
               }
-            );
+            });
 
             backendMessage = errors.join(" | ");
           }
@@ -258,25 +245,33 @@ export function VolunteerForm({ onClose }: Props) {
 
   const error = (msg?: string) =>
     msg ? (
-      <p className="mt-1 text-xs text-red-500">
+      <p className="mt-1 text-xs text-red-500 dark:text-red-400">
         {msg}
       </p>
     ) : null;
 
   if (isSuccess) {
     return (
-      <div className="relative w-full max-h-[90vh] overflow-y-auto bg-white rounded-2xl p-8 text-center shadow-xl border">
+      <div
+        className="
+          relative w-full max-h-[90vh] overflow-y-auto
+          rounded-2xl
+          bg-white dark:bg-slate-900
+          p-8 text-center
+          shadow-xl dark:shadow-2xl
+          border border-slate-200 dark:border-slate-700
+          text-slate-900 dark:text-white
+        "
+      >
         <CloseButton />
 
-        <div className="mb-3 text-4xl">
-          🎉
-        </div>
+        <div className="mb-3 text-4xl">🎉</div>
 
-        <h3 className="text-xl font-semibold text-gray-900">
+        <h3 className="text-xl font-semibold text-slate-900 dark:text-white">
           Application received!
         </h3>
 
-        <p className="mt-2 text-gray-600">
+        <p className="mt-2 text-slate-600 dark:text-gray-400">
           Thank you for your interest in volunteering
           with OFAS. We&apos;ll review your details and
           get back to you soon.
@@ -289,7 +284,13 @@ export function VolunteerForm({ onClose }: Props) {
             setErrorMsg("");
           }}
           variant="outline"
-          className="mt-6 rounded-full text-black"
+          className="
+            mt-6 rounded-full
+            border-slate-300 dark:border-slate-600
+            bg-white dark:bg-slate-800
+            text-slate-900 dark:text-white
+            hover:bg-slate-100 dark:hover:bg-slate-700
+          "
         >
           Submit another
         </Button>
@@ -305,21 +306,24 @@ export function VolunteerForm({ onClose }: Props) {
         onSubmit={form.handleSubmit(onSubmit)}
         className="
           w-full
-          bg-slate-900
-          text-white
+          bg-gradient-to-br
+          from-white via-slate-50 to-sky-50
+          dark:from-slate-900 dark:via-slate-900 dark:to-slate-950
+          text-slate-900 dark:text-white
           p-6 sm:p-8
           rounded-3xl
           shadow-2xl
+          border border-slate-200/80 dark:border-slate-800
           space-y-6
         "
       >
         {/* HEADER */}
         <div className="space-y-1 pr-8">
-          <h2 className="text-2xl font-semibold">
+          <h2 className="text-2xl font-semibold text-slate-900 dark:text-white">
             Volunteer Application
           </h2>
 
-          <p className="text-sm text-gray-400">
+          <p className="text-sm text-slate-500 dark:text-gray-400">
             Fill In Your Details To Become Our Volunteer.
           </p>
         </div>
@@ -336,10 +340,15 @@ export function VolunteerForm({ onClose }: Props) {
               {...form.register("name")}
               className="
                 w-full h-12 px-4 rounded-xl
-                bg-slate-800
+                bg-white dark:bg-slate-800
+                text-slate-900 dark:text-white
+                placeholder:text-slate-400 dark:placeholder:text-gray-500
+                border border-slate-200 dark:border-slate-700
                 outline-none
                 focus:ring-2 focus:ring-blue-500
+                focus:border-blue-500
                 disabled:opacity-60
+                transition
               "
             />
 
@@ -358,10 +367,15 @@ export function VolunteerForm({ onClose }: Props) {
               {...form.register("email")}
               className="
                 w-full h-12 px-4 rounded-xl
-                bg-slate-800
+                bg-white dark:bg-slate-800
+                text-slate-900 dark:text-white
+                placeholder:text-slate-400 dark:placeholder:text-gray-500
+                border border-slate-200 dark:border-slate-700
                 outline-none
                 focus:ring-2 focus:ring-blue-500
+                focus:border-blue-500
                 disabled:opacity-60
+                transition
               "
             />
 
@@ -381,14 +395,19 @@ export function VolunteerForm({ onClose }: Props) {
               {...form.register("phone_number")}
               className="
                 w-full h-12 px-4 rounded-xl
-                bg-slate-800
+                bg-white dark:bg-slate-800
+                text-slate-900 dark:text-white
+                placeholder:text-slate-400 dark:placeholder:text-gray-500
+                border border-slate-200 dark:border-slate-700
                 outline-none
                 focus:ring-2 focus:ring-blue-500
+                focus:border-blue-500
                 disabled:opacity-60
+                transition
               "
             />
 
-            <p className="mt-1 text-xs text-gray-500">
+            <p className="mt-1 text-xs text-slate-500 dark:text-gray-500">
               You can enter 080..., 234..., or +234...
             </p>
 
@@ -404,29 +423,48 @@ export function VolunteerForm({ onClose }: Props) {
               {...form.register("interest")}
               className="
                 w-full h-12 px-4 rounded-xl
-                bg-slate-800
+                bg-white dark:bg-slate-800
+                text-slate-900 dark:text-white
+                border border-slate-200 dark:border-slate-700
                 outline-none
                 focus:ring-2 focus:ring-blue-500
+                focus:border-blue-500
                 disabled:opacity-60
+                transition
               "
             >
-              <option value="">
+              <option
+                value=""
+                className="bg-white dark:bg-slate-800"
+              >
                 Select interest area
               </option>
 
-              <option value="general">
+              <option
+                value="general"
+                className="bg-white dark:bg-slate-800"
+              >
                 General Support
               </option>
 
-              <option value="events">
+              <option
+                value="events"
+                className="bg-white dark:bg-slate-800"
+              >
                 Event Staff
               </option>
 
-              <option value="campus">
+              <option
+                value="campus"
+                className="bg-white dark:bg-slate-800"
+              >
                 Campus Representative
               </option>
 
-              <option value="education">
+              <option
+                value="education"
+                className="bg-white dark:bg-slate-800"
+              >
                 Education / Healthcare
               </option>
             </select>
@@ -445,11 +483,16 @@ export function VolunteerForm({ onClose }: Props) {
               {...form.register("message")}
               className="
                 w-full p-4 rounded-xl
-                bg-slate-800
+                bg-white dark:bg-slate-800
+                text-slate-900 dark:text-white
+                placeholder:text-slate-400 dark:placeholder:text-gray-500
+                border border-slate-200 dark:border-slate-700
                 outline-none
                 focus:ring-2 focus:ring-blue-500
+                focus:border-blue-500
                 disabled:opacity-60
                 resize-none
+                transition
               "
             />
           </div>
@@ -457,7 +500,14 @@ export function VolunteerForm({ onClose }: Props) {
 
         {/* CONSENT */}
         <div>
-          <label className="flex items-start gap-3 text-sm text-gray-300 cursor-pointer">
+          <label
+            className="
+              flex items-start gap-3
+              text-sm
+              text-slate-600 dark:text-gray-300
+              cursor-pointer
+            "
+          >
             <input
               type="checkbox"
               disabled={isSubmitting}
@@ -478,14 +528,16 @@ export function VolunteerForm({ onClose }: Props) {
 
         {/* BACKEND ERROR */}
         {errorMsg && (
-          <div className="
-            rounded-xl
-            border
-            border-red-500/20
-            bg-red-500/10
-            px-4 py-3
-          ">
-            <p className="text-sm text-red-400 font-medium">
+          <div
+            className="
+              rounded-xl
+              border
+              border-red-200 dark:border-red-500/20
+              bg-red-50 dark:bg-red-500/10
+              px-4 py-3
+            "
+          >
+            <p className="text-sm text-red-600 dark:text-red-400 font-medium">
               {errorMsg}
             </p>
           </div>
@@ -500,18 +552,16 @@ export function VolunteerForm({ onClose }: Props) {
             rounded-xl
             bg-blue-600
             hover:bg-blue-500
+            text-white
             transition
             font-semibold
             disabled:opacity-60
             disabled:cursor-not-allowed
           "
         >
-          {isSubmitting
-            ? "Submitting..."
-            : "Apply Now"}
+          {isSubmitting ? "Submitting..." : "Apply Now"}
         </Button>
       </form>
     </div>
   );
 }
- 

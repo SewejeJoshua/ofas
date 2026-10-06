@@ -1,4 +1,4 @@
- "use client";
+"use client";
 
 import { Container } from "@/components/ui/container";
 import {
@@ -12,11 +12,11 @@ import { useEffect } from "react";
 export function AboutPage() {
   const { scrollY } = useScroll();
 
-  // 🎬 Parallax effects
+  // Parallax effects
   const ySlow = useTransform(scrollY, [0, 500], [0, 80]);
   const yFast = useTransform(scrollY, [0, 500], [0, -60]);
 
-  // 🧠 Mouse glow
+  // Mouse glow
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
@@ -31,7 +31,7 @@ export function AboutPage() {
     return () => {
       window.removeEventListener("mousemove", handleMove);
     };
-  }, []);
+  }, [mouseX, mouseY]);
 
   const content = [
     {
@@ -49,21 +49,58 @@ export function AboutPage() {
       className="relative scroll-mt-24 pb-14 sm:pb-18 overflow-hidden"
       id="about"
     >
-      {/* 🌊 Base gradient */}
-      <div className="absolute inset-0 -z-20 bg-gradient-to-b from-sky-50 via-white to-blue-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950" />
+      {/* =====================================================
+          BASE BACKGROUND
+      ===================================================== */}
+      <div
+        className="
+          absolute inset-0 -z-20
+          bg-gradient-to-b
+          from-sky-100
+          via-slate-50
+          to-blue-100
+          dark:from-gray-950
+          dark:via-gray-900
+          dark:to-gray-950
+        "
+      />
 
-      {/* 🎬 PARALLAX BLOBS */}
+      {/* =====================================================
+          PARALLAX BLOBS
+      ===================================================== */}
       <motion.div
         style={{ y: ySlow }}
-        className="absolute top-[-100px] left-[-100px] w-[400px] h-[400px] bg-sky-300/20 rounded-full blur-3xl -z-10"
+        className="
+          absolute
+          top-[-100px]
+          left-[-100px]
+          w-[400px]
+          h-[400px]
+          bg-sky-400/15
+          rounded-full
+          blur-3xl
+          -z-10
+        "
       />
 
       <motion.div
         style={{ y: yFast }}
-        className="absolute bottom-[-120px] right-[-80px] w-[450px] h-[450px] bg-blue-300/20 rounded-full blur-3xl -z-10"
+        className="
+          absolute
+          bottom-[-120px]
+          right-[-80px]
+          w-[450px]
+          h-[450px]
+          bg-blue-400/15
+          rounded-full
+          blur-3xl
+          -z-10
+        "
       />
 
-      {/* 💡 Mouse-follow glow */}
+      {/* =====================================================
+          MOUSE FOLLOW GLOW
+      ===================================================== */}
       <motion.div
         style={{
           x: mouseX,
@@ -71,7 +108,16 @@ export function AboutPage() {
           translateX: "-50%",
           translateY: "-50%",
         }}
-        className="pointer-events-none fixed w-[300px] h-[300px] bg-sky-300/20 blur-3xl rounded-full z-0"
+        className="
+          pointer-events-none
+          fixed
+          w-[300px]
+          h-[300px]
+          bg-sky-300/15
+          blur-3xl
+          rounded-full
+          z-0
+        "
       />
 
       <div className="py-18 sm:py-22 relative z-10">
@@ -89,11 +135,31 @@ export function AboutPage() {
             viewport={{ once: true }}
             className="text-center max-w-3xl mx-auto"
           >
-            <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight text-gray-900 dark:text-white leading-[1.05]">
+            <h1
+              className="
+                text-5xl
+                sm:text-6xl
+                md:text-7xl
+                font-bold
+                tracking-tight
+                text-gray-900
+                dark:text-white
+                leading-[1.05]
+              "
+            >
               About <span className="text-sky-500">OFAS</span>
             </h1>
 
-            <p className="mt-5 text-lg sm:text-xl text-gray-600 dark:text-gray-300 leading-relaxed">
+            <p
+              className="
+                mt-5
+                text-lg
+                sm:text-xl
+                text-gray-700
+                dark:text-gray-300
+                leading-relaxed
+              "
+            >
               The One Family Asthma Support Community is a growing community
               focused on awareness, education, and support — helping families
               breathe easier, together.
@@ -129,45 +195,76 @@ export function AboutPage() {
                   duration: 0.8,
                   ease: [0.22, 1, 0.36, 1],
                 }}
-                whileHover={{ scale: 1.04 }}
+                whileHover={{
+                  scale: 1.02,
+                  y: -4,
+                }}
                 className="
                   group
                   relative
                   flex
                   flex-col
                   rounded-3xl
+
                   border
-                  border-white/20
+                  border-slate-200
                   dark:border-gray-800/60
-                  bg-white/60
-                  dark:bg-gray-900/60
+
+                  bg-white
+                  dark:bg-gray-900/70
+
                   backdrop-blur-2xl
+
                   p-8
-                  shadow-[0_10px_40px_rgba(0,0,0,0.08)]
+
+                  shadow-[0_12px_40px_rgba(15,23,42,0.08)]
+                  dark:shadow-[0_12px_40px_rgba(0,0,0,0.25)]
+
                   transition-all
                   duration-500
                 "
               >
-                {/* glow */}
-                <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-sky-200/40 to-transparent opacity-0 group-hover:opacity-100 transition duration-500" />
+                {/* Card hover glow */}
+                <div
+                  className="
+                    absolute
+                    inset-0
+                    rounded-3xl
+                    bg-gradient-to-br
+                    from-sky-100/70
+                    via-transparent
+                    to-blue-100/40
+                    dark:from-sky-500/10
+                    dark:to-transparent
+                    opacity-0
+                    group-hover:opacity-100
+                    transition
+                    duration-500
+                    pointer-events-none
+                  "
+                />
 
-                <div>
-                  {/* =================================================
-                      CENTERED CARD HEADER
-                  ================================================= */}
-                  <h2 className="text-center text-2xl font-semibold text-gray-900 dark:text-white">
+                <div className="relative z-10">
+                  {/* Card header */}
+                  <h2
+                    className="
+                      text-center
+                      text-2xl
+                      font-semibold
+                      text-gray-900
+                      dark:text-white
+                    "
+                  >
                     {item.title}
                   </h2>
 
-                  {/* =================================================
-                      JUSTIFIED BODY TEXT
-                  ================================================= */}
+                  {/* Card body */}
                   <p
                     className="
                       mt-5
                       max-w-prose
                       text-justify
-                      text-gray-600
+                      text-gray-700
                       dark:text-gray-300
                       leading-[1.8]
                       whitespace-pre-line
@@ -182,7 +279,6 @@ export function AboutPage() {
 
           {/* =====================================================
               FUTURE
-              Fully collapsed but preserved
           ===================================================== */}
           <motion.div
             initial={{ opacity: 0, y: 80 }}
@@ -198,4 +294,3 @@ export function AboutPage() {
 }
 
 export default AboutPage;
- 

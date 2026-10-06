@@ -204,14 +204,30 @@ export function CampusRepForm({ onClose }: Props) {
 
   const error = (msg?: string) =>
     msg ? (
-      <p className="mt-1 text-xs text-red-500">
+      <p className="mt-1 text-xs text-red-500 dark:text-red-400">
         {msg}
       </p>
     ) : null;
 
   if (isSuccess) {
     return (
-      <div className="bg-white rounded-2xl p-8 text-center shadow-xl relative">
+      <div
+        className="
+          relative
+          bg-white
+          dark:bg-slate-900
+          rounded-2xl
+          p-8
+          text-center
+          shadow-xl
+          dark:shadow-2xl
+          border
+          border-slate-200
+          dark:border-slate-700
+          text-slate-900
+          dark:text-white
+        "
+      >
         {onClose && (
           <button
             type="button"
@@ -220,7 +236,12 @@ export function CampusRepForm({ onClose }: Props) {
               absolute top-4 right-4
               p-2
               rounded-full
-              hover:bg-gray-200
+              text-slate-500
+              dark:text-gray-400
+              hover:bg-slate-100
+              dark:hover:bg-slate-800
+              hover:text-slate-900
+              dark:hover:text-white
               transition
             "
             aria-label="Close"
@@ -233,11 +254,11 @@ export function CampusRepForm({ onClose }: Props) {
           🎉
         </div>
 
-        <h3 className="text-xl font-semibold text-gray-900">
+        <h3 className="text-xl font-semibold text-slate-900 dark:text-white">
           Application Received!
         </h3>
 
-        <p className="text-gray-600 mt-2">
+        <p className="text-slate-600 dark:text-gray-400 mt-2">
           Thank you for your interest in starting an
           OFAS campus chapter. We&apos;ll get back to
           you shortly.
@@ -249,7 +270,17 @@ export function CampusRepForm({ onClose }: Props) {
             setIsSuccess(false);
             setErrorMsg("");
           }}
-          className="mt-6 text-black"
+          className="
+            mt-6
+            border-slate-300
+            dark:border-slate-600
+            bg-white
+            dark:bg-slate-800
+            text-slate-900
+            dark:text-white
+            hover:bg-slate-100
+            dark:hover:bg-slate-700
+          "
           variant="outline"
         >
           Submit another
@@ -262,12 +293,23 @@ export function CampusRepForm({ onClose }: Props) {
     <form
       onSubmit={form.handleSubmit(onSubmit)}
       className="
-        bg-slate-900
-        text-white
-        p-8
+        bg-gradient-to-br
+        from-white
+        via-slate-50
+        to-sky-50
+        dark:from-slate-900
+        dark:via-slate-900
+        dark:to-slate-950
+        text-slate-900
+        dark:text-white
+        p-6
+        sm:p-8
         rounded-3xl
         space-y-6
         shadow-2xl
+        border
+        border-slate-200/80
+        dark:border-slate-800
         relative
       "
     >
@@ -279,7 +321,12 @@ export function CampusRepForm({ onClose }: Props) {
             absolute top-4 right-4
             p-2
             rounded-full
-            hover:bg-white/10
+            text-slate-500
+            dark:text-gray-400
+            hover:bg-slate-100
+            dark:hover:bg-white/10
+            hover:text-slate-900
+            dark:hover:text-white
             transition
           "
           aria-label="Close"
@@ -290,11 +337,11 @@ export function CampusRepForm({ onClose }: Props) {
 
       {/* HEADER */}
       <div className="space-y-1 pr-8">
-        <h2 className="text-2xl font-semibold">
+        <h2 className="text-2xl font-semibold text-slate-900 dark:text-white">
           Start a Campus Chapter
         </h2>
 
-        <p className="text-sm text-gray-400">
+        <p className="text-sm text-slate-500 dark:text-gray-400">
           Apply to represent OFAS on your campus.
         </p>
       </div>
@@ -314,11 +361,21 @@ export function CampusRepForm({ onClose }: Props) {
               h-12
               px-4
               rounded-xl
-              bg-slate-800
+              bg-white
+              dark:bg-slate-800
+              text-slate-900
+              dark:text-white
+              placeholder:text-slate-400
+              dark:placeholder:text-gray-500
+              border
+              border-slate-200
+              dark:border-slate-700
               outline-none
               focus:ring-2
               focus:ring-blue-500
+              focus:border-blue-500
               disabled:opacity-60
+              transition
             "
           />
 
@@ -340,11 +397,21 @@ export function CampusRepForm({ onClose }: Props) {
               h-12
               px-4
               rounded-xl
-              bg-slate-800
+              bg-white
+              dark:bg-slate-800
+              text-slate-900
+              dark:text-white
+              placeholder:text-slate-400
+              dark:placeholder:text-gray-500
+              border
+              border-slate-200
+              dark:border-slate-700
               outline-none
               focus:ring-2
               focus:ring-blue-500
+              focus:border-blue-500
               disabled:opacity-60
+              transition
             "
           />
 
@@ -365,11 +432,21 @@ export function CampusRepForm({ onClose }: Props) {
               h-12
               px-4
               rounded-xl
-              bg-slate-800
+              bg-white
+              dark:bg-slate-800
+              text-slate-900
+              dark:text-white
+              placeholder:text-slate-400
+              dark:placeholder:text-gray-500
+              border
+              border-slate-200
+              dark:border-slate-700
               outline-none
               focus:ring-2
               focus:ring-blue-500
+              focus:border-blue-500
               disabled:opacity-60
+              transition
             "
           />
 
@@ -392,11 +469,21 @@ export function CampusRepForm({ onClose }: Props) {
               h-12
               px-4
               rounded-xl
-              bg-slate-800
+              bg-white
+              dark:bg-slate-800
+              text-slate-900
+              dark:text-white
+              placeholder:text-slate-400
+              dark:placeholder:text-gray-500
+              border
+              border-slate-200
+              dark:border-slate-700
               outline-none
               focus:ring-2
               focus:ring-blue-500
+              focus:border-blue-500
               disabled:opacity-60
+              transition
             "
           />
 
@@ -417,12 +504,22 @@ export function CampusRepForm({ onClose }: Props) {
             w-full
             p-4
             rounded-xl
-            bg-slate-800
+            bg-white
+            dark:bg-slate-800
+            text-slate-900
+            dark:text-white
+            placeholder:text-slate-400
+            dark:placeholder:text-gray-500
+            border
+            border-slate-200
+            dark:border-slate-700
             outline-none
             focus:ring-2
             focus:ring-blue-500
+            focus:border-blue-500
             disabled:opacity-60
             resize-none
+            transition
           "
         />
 
@@ -437,13 +534,15 @@ export function CampusRepForm({ onClose }: Props) {
           className="
             rounded-xl
             border
-            border-red-500/20
-            bg-red-500/10
+            border-red-200
+            dark:border-red-500/20
+            bg-red-50
+            dark:bg-red-500/10
             px-4
             py-3
           "
         >
-          <p className="text-sm text-red-400 font-medium">
+          <p className="text-sm text-red-600 dark:text-red-400 font-medium">
             {errorMsg}
           </p>
         </div>
@@ -458,6 +557,7 @@ export function CampusRepForm({ onClose }: Props) {
           h-12
           bg-blue-600
           hover:bg-blue-500
+          text-white
           transition
           disabled:opacity-60
           disabled:cursor-not-allowed
@@ -470,4 +570,3 @@ export function CampusRepForm({ onClose }: Props) {
     </form>
   );
 }
- 

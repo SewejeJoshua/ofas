@@ -1,20 +1,18 @@
- "use client";
+"use client";
 
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Container } from "@/components/ui/container";
-import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-import DonatePage from "@/app/donate/page";
 import AsthmaScorecardForm from "@/components/forms/asthma-scorecard-form";
 
 type NavItem = {
   name: string;
   href?: string;
-  action?: "donate" | "test";
+  action?: "test";
 };
 
 const desktopNavigation: NavItem[] = [
@@ -23,7 +21,7 @@ const desktopNavigation: NavItem[] = [
   { name: "Resources", href: "/#resources" },
   { name: "Campus Bases", href: "/#campus-bases" },
   { name: "Gallery", href: "/gallery" },
-  { name: "Test", action: "test" }, 
+  { name: "Test", action: "test" },
   { name: "Contact", href: "/#contact" },
 ];
 
@@ -33,13 +31,13 @@ const mobileNavigation: NavItem[] = [
   { name: "Resources", href: "/#resources" },
   { name: "Campus Bases", href: "/#campus-bases" },
   { name: "Gallery", href: "/gallery" },
-  { name: "Test", action: "test" }, 
+  { name: "Test", action: "test" },
   { name: "Contact", href: "/#contact" },
 ];
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeModal, setActiveModal] = useState<null | "donate" | "test">(
+  const [activeModal, setActiveModal] = useState<null | "test">(
     null
   );
 
@@ -48,7 +46,9 @@ export function Header() {
   };
 
   useEffect(() => {
-    document.body.style.overflow = activeModal ? "hidden" : "auto";
+    document.body.style.overflow = activeModal
+      ? "hidden"
+      : "auto";
 
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -68,7 +68,7 @@ export function Header() {
     setMobileMenuOpen(false);
   };
 
-  const handleAction = (action: "donate" | "test") => {
+  const handleAction = (action: "test") => {
     setMobileMenuOpen(false);
     setActiveModal(action);
   };
@@ -128,7 +128,6 @@ export function Header() {
                         >
                           <span>{item.name}</span>
 
-                          {/* Animated underline */}
                           <span className="absolute bottom-1 left-1/2 h-0.5 w-0 -translate-x-1/2 rounded-full bg-sky-500 transition-all duration-300 group-hover:w-1/2" />
                         </Link>
                       );
@@ -138,29 +137,19 @@ export function Header() {
                       <button
                         key={item.name}
                         type="button"
-                        onClick={() => setActiveModal(item.action!)}
+                        onClick={() =>
+                          setActiveModal(item.action!)
+                        }
                         className="group relative rounded-full px-3.5 py-2 text-sm font-semibold text-gray-700 transition-all duration-300 hover:bg-sky-50 hover:text-sky-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 dark:text-gray-300 dark:hover:bg-sky-950/50 dark:hover:text-sky-400"
                       >
                         <span>{item.name}</span>
 
-                        {/* Animated underline */}
                         <span className="absolute bottom-1 left-1/2 h-0.5 w-0 -translate-x-1/2 rounded-full bg-sky-500 transition-all duration-300 group-hover:w-1/2" />
                       </button>
                     );
                   })}
                 </div>
               </nav>
-
-              {/* ===================================================
-                  DONATE BUTTON
-              =================================================== */}
-              <Button
-                type="button"
-                onClick={() => setActiveModal("donate")}
-                className="hidden md:block rounded-full bg-sky-500 text-white"
-              >
-                Donate
-              </Button>
 
               {/* ===================================================
                   MOBILE MENU BUTTON
@@ -173,16 +162,30 @@ export function Header() {
                     : "Open navigation menu"
                 }
                 aria-expanded={mobileMenuOpen}
-                onClick={() => setMobileMenuOpen((prev) => !prev)}
+                onClick={() =>
+                  setMobileMenuOpen((prev) => !prev)
+                }
                 className="flex h-11 w-11 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-800 shadow-sm transition-all duration-300 hover:border-sky-300 hover:bg-sky-50 hover:text-sky-600 active:scale-95 xl:hidden dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 dark:hover:border-sky-700 dark:hover:bg-sky-950/50 dark:hover:text-sky-400"
               >
-                <AnimatePresence mode="wait" initial={false}>
+                <AnimatePresence
+                  mode="wait"
+                  initial={false}
+                >
                   {mobileMenuOpen ? (
                     <motion.div
                       key="close"
-                      initial={{ rotate: -90, opacity: 0 }}
-                      animate={{ rotate: 0, opacity: 1 }}
-                      exit={{ rotate: 90, opacity: 0 }}
+                      initial={{
+                        rotate: -90,
+                        opacity: 0,
+                      }}
+                      animate={{
+                        rotate: 0,
+                        opacity: 1,
+                      }}
+                      exit={{
+                        rotate: 90,
+                        opacity: 0,
+                      }}
                       transition={{ duration: 0.2 }}
                     >
                       <X className="h-5 w-5" />
@@ -190,9 +193,18 @@ export function Header() {
                   ) : (
                     <motion.div
                       key="menu"
-                      initial={{ rotate: 90, opacity: 0 }}
-                      animate={{ rotate: 0, opacity: 1 }}
-                      exit={{ rotate: -90, opacity: 0 }}
+                      initial={{
+                        rotate: 90,
+                        opacity: 0,
+                      }}
+                      animate={{
+                        rotate: 0,
+                        opacity: 1,
+                      }}
+                      exit={{
+                        rotate: -90,
+                        opacity: 0,
+                      }}
                       transition={{ duration: 0.2 }}
                     >
                       <Menu className="h-5 w-5" />
@@ -210,10 +222,22 @@ export function Header() {
         <AnimatePresence>
           {mobileMenuOpen && (
             <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.25, ease: "easeInOut" }}
+              initial={{
+                height: 0,
+                opacity: 0,
+              }}
+              animate={{
+                height: "auto",
+                opacity: 1,
+              }}
+              exit={{
+                height: 0,
+                opacity: 0,
+              }}
+              transition={{
+                duration: 0.25,
+                ease: "easeInOut",
+              }}
               className="overflow-hidden border-t border-gray-200 bg-white xl:hidden dark:border-gray-800 dark:bg-gray-950"
             >
               <Container>
@@ -225,77 +249,78 @@ export function Header() {
                   className="py-4"
                 >
                   <div className="space-y-1">
-                    {mobileNavigation.map((item, index) => {
-                      if (item.href) {
+                    {mobileNavigation.map(
+                      (item, index) => {
+                        if (item.href) {
+                          return (
+                            <motion.div
+                              key={item.name}
+                              initial={{
+                                opacity: 0,
+                                x: -10,
+                              }}
+                              animate={{
+                                opacity: 1,
+                                x: 0,
+                              }}
+                              transition={{
+                                delay: index * 0.04,
+                                duration: 0.2,
+                              }}
+                            >
+                              <Link
+                                href={item.href}
+                                onClick={
+                                  handleMobileLinkClick
+                                }
+                                className="group flex items-center justify-between rounded-xl px-4 py-3 text-sm font-semibold text-gray-700 transition-all duration-300 hover:bg-sky-50 hover:pl-5 hover:text-sky-600 dark:text-gray-300 dark:hover:bg-sky-950/40 dark:hover:text-sky-400"
+                              >
+                                <span>{item.name}</span>
+
+                                <span className="translate-x-0 opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100">
+                                  →
+                                </span>
+                              </Link>
+                            </motion.div>
+                          );
+                        }
+
                         return (
                           <motion.div
                             key={item.name}
-                            initial={{ opacity: 0, x: -10 }}
-                            animate={{ opacity: 1, x: 0 }}
+                            initial={{
+                              opacity: 0,
+                              x: -10,
+                            }}
+                            animate={{
+                              opacity: 1,
+                              x: 0,
+                            }}
                             transition={{
                               delay: index * 0.04,
                               duration: 0.2,
                             }}
                           >
-                            <Link
-                              href={item.href}
-                              onClick={handleMobileLinkClick}
-                              className="group flex items-center justify-between rounded-xl px-4 py-3 text-sm font-semibold text-gray-700 transition-all duration-300 hover:bg-sky-50 hover:pl-5 hover:text-sky-600 dark:text-gray-300 dark:hover:bg-sky-950/40 dark:hover:text-sky-400"
+                            <button
+                              type="button"
+                              onClick={() =>
+                                handleAction(
+                                  item.action!
+                                )
+                              }
+                              className="group flex w-full items-center justify-between rounded-xl px-4 py-3 text-left text-sm font-semibold text-gray-700 transition-all duration-300 hover:bg-sky-50 hover:pl-5 hover:text-sky-600 dark:text-gray-300 dark:hover:bg-sky-950/40 dark:hover:text-sky-400"
                             >
                               <span>{item.name}</span>
 
                               <span className="translate-x-0 opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100">
                                 →
                               </span>
-                            </Link>
+                            </button>
                           </motion.div>
                         );
                       }
-
-                      return (
-                        <motion.div
-                          key={item.name}
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{
-                            delay: index * 0.04,
-                            duration: 0.2,
-                          }}
-                        >
-                          <button
-                            type="button"
-                            onClick={() => handleAction(item.action!)}
-                            className="group flex w-full items-center justify-between rounded-xl px-4 py-3 text-left text-sm font-semibold text-gray-700 transition-all duration-300 hover:bg-sky-50 hover:pl-5 hover:text-sky-600 dark:text-gray-300 dark:hover:bg-sky-950/40 dark:hover:text-sky-400"
-                          >
-                            <span>{item.name}</span>
-
-                            <span className="translate-x-0 opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100">
-                              →
-                            </span>
-                          </button>
-                        </motion.div>
-                      );
-                    })}
+                    )}
                   </div>
-
-                  {/* Mobile Donate */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{
-                      delay: mobileNavigation.length * 0.04,
-                      duration: 0.25,
-                    }}
-                    className="mt-4 border-t border-gray-100 pt-4 dark:border-gray-800"
-                  >
-                    <Button
-                      type="button"
-                      onClick={() => handleAction("donate")}
-                      className="h-12 w-full rounded-xl bg-sky-500 font-semibold text-white shadow-sm transition-all duration-300 hover:bg-sky-600 hover:shadow-lg hover:shadow-sky-500/20 active:scale-[0.99]"
-                    >
-                      Donate
-                    </Button>
-                  </motion.div>
                 </motion.nav>
               </Container>
             </motion.div>
@@ -304,10 +329,10 @@ export function Header() {
       </header>
 
       {/* ===========================================================
-          MODALS
+          TEST MODAL
       =========================================================== */}
       <AnimatePresence>
-        {activeModal && (
+        {activeModal === "test" && (
           <motion.div
             onClick={closeModal}
             className="fixed inset-0 z-[999] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
@@ -339,13 +364,7 @@ export function Header() {
                 ease: "easeOut",
               }}
             >
-              {/* DONATE */}
-              {activeModal === "donate" && (
-                <DonatePage onClose={closeModal} />
-              )}
-
-              {/* TEST */}
-              {activeModal === "test" && <AsthmaScorecardForm />}
+              <AsthmaScorecardForm />
             </motion.div>
           </motion.div>
         )}
@@ -353,4 +372,3 @@ export function Header() {
     </>
   );
 }
- 
