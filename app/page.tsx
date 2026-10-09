@@ -8,6 +8,7 @@ import { ProgramsPage } from "@/app/programs/page";
 import { ResourcesPage } from "@/app/resources/page";
 import { CampusBasesPage } from "@/app/campus-bases/page";
 import TeamPage from "@/app/team/page";
+import Testimonials from "@/app/testimonials/page";
 import ContactPage from "@/app/contact/page";
 
 
@@ -24,6 +25,7 @@ export default function Home() {
       <ResourcesPage />
       <CampusBasesPage />
      <TeamPage />
+      <Testimonials />
      <ContactPage /> 
 
       {/* optional sections */}

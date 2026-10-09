@@ -192,19 +192,7 @@ export function ProgramsPage() {
       type="button"
       onClick={() => setVolunteerOpen(true)}
       className="
-        rounded-full
-        bg-blue-600
-        px-8
-        text-base
-        font-semibold
-        text-white
-        shadow-sm
-        transition-all
-        duration-300
-        hover:bg-blue-700
-        hover:-translate-y-0.5
-        hover:shadow-lg
-        hover:shadow-blue-500/20
+    inline-flex h-12 items-center gap-2 rounded-full bg-blue-500 px-8 text-white transition-transform duration-200 hover:scale-105 hover:!bg-blue-800 hover:!text-white
       "
     >
       Be A Volunteer

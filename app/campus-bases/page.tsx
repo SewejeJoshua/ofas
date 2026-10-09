@@ -128,12 +128,12 @@ export function CampusBasesPage() {
             {CAMPUSES.length > 6 && (
               <div className="mt-6 text-center">
                 <Button
-                  variant="outline"
-                  onClick={() => setShowAll(!showAll)}
-                  className="rounded-full px-6"
-                >
-                  {showAll ? "Show Less" : "See More Campuses"}
-                </Button>
+  variant="outline"
+  onClick={() => setShowAll(!showAll)}
+  className="mt-8 h-12 rounded-full !border-none bg-blue-500 px-8 text-white transition-transform duration-200 hover:scale-105 hover:!bg-blue-800 hover:!text-white"
+>
+  {showAll ? "Show Less" : "See More Campuses"}
+</Button>
               </div>
             )}
           </div>
@@ -154,11 +154,11 @@ export function CampusBasesPage() {
           </p>
 
           <Button
-            onClick={() => setOpen(true)}
-            className="mt-8 rounded-full px-8 h-12 bg-blue-500 text-white hover:scale-105"
-          >
-            Apply to Start a Chapter
-          </Button>
+  onClick={() => setOpen(true)}
+  className="mt-8 inline-flex h-12 items-center gap-2 rounded-full bg-blue-500 px-8 text-white transition-transform duration-200 hover:scale-105 hover:!bg-blue-800 hover:!text-white"
+>
+  Apply to Start a Chapter
+</Button>
         </motion.div>
       </Container>
 

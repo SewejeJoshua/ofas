@@ -207,12 +207,7 @@ export function Footer() {
                   type="button"
                   onClick={() => setOpenEvents(true)}
                   className="
-                    rounded-full
-                    bg-blue-600
-                    hover:bg-blue-500
-                    text-white
-                    text-sm
-                    shadow-sm
+                    inline-flex h-12 items-center gap-2 rounded-full bg-blue-500 px-8 text-white transition-transform duration-200 hover:scale-105 hover:!bg-blue-800 hover:!text-white
                   "
                 >
                   View Events
@@ -222,13 +217,7 @@ export function Footer() {
                   type="button"
                   onClick={() => setOpenDonate(true)}
                   className="
-                    rounded-full
-                    bg-blue-600
-                    hover:bg-blue-500
-                    text-white
-                    text-sm
-                    shadow-sm
-                    transition-all
+                  inline-flex h-12 items-center gap-2 rounded-full bg-blue-500 px-8 text-white transition-transform duration-200 hover:scale-105 hover:!bg-blue-800 hover:!text-white
                   "
                 >
                   Donate
